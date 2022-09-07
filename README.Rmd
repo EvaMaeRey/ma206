@@ -1,0 +1,33 @@
+---
+output: github_document
+---
+   
+<!-- README.md is generated from README.Rmd. Please edit that file --> 
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(      
+  collapse = TRUE,
+  warning = FALSE,
+  comment = "#>"          
+)       
+```
+
+# ma206 repo
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+ma206 hold slides and more for our class.  
+
+```{r, results='asis', echo = F}
+library(magrittr)
+webpages <- fs::dir_ls(type = "file", recurse = T, glob = "*.html") %>% rev()
+    
+webpages %>%    
+  paste0("- [",
+         . ,
+         "]",
+         "(https://evamaerey.github.io/ma206/", ., ")\n") %>% 
+  cat()     
+```
+
