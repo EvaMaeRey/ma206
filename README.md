@@ -17,5 +17,6 @@ ma206 hold slides and more for our class.
   - [lesson\_07\_generalization\_validity.html](https://evamaerey.github.io/ma206/lesson_07_generalization_validity.html)
   - [lesson\_08\_quantitative\_generalization.html](https://evamaerey.github.io/ma206/lesson_08_quantitative_generalization.html)
   - [ma206simulationsflipbook.html](https://evamaerey.github.io/ma206/ma206simulationsflipbook.html)
+  - [project\_dataset\_ideas.html](https://evamaerey.github.io/ma206/project_dataset_ideas.html)
   - [project\_lahman\_baseball\_example.html](https://evamaerey.github.io/ma206/project_lahman_baseball_example.html)
   - [three\_s\_approach\_with\_r.html](https://evamaerey.github.io/ma206/three_s_approach_with_r.html)

@@ -27,7 +27,7 @@ webpages %>%
   paste0("- [",
          . ,
          "]",
-         "(https://evamaerey.github.io/ma206/", ., ")\n") %>% rev() %>% 
+         "(https://evamaerey.github.io/ma206/", ., ")\n") %>% rev() %>%   
   cat()     
 ```
 
