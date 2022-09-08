@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ma206, lesson 2</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+class: inverse, left, bottom
+background-image: url(https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1470&amp;q=80)
+background-size: cover
+# .Large[ma206data Lesson 4]
+## .small[Statistic, Simulate, Strength; course project prep]
+#### .tiny[Dr. Evangeline Reynolds | 2022-08-18 |Image credit: William Iven, Upsplash]
+???
+
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 70%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+
+# Warm up.  
+
+--
+
+## guessthecorrelation.com
+
+
+
+---
+
+# Course Map
+
+- 6 step method
+- SSS method; and theory based
+- Correlation
+- Course Project
+
+--
+
+# Course project proposal
+
+- Due beginning of lesson 7
+- Recommended 4 slides for submission
+
+
+
+---
+
+# Simulation based approach advocates
+
+http://allendowney.blogspot.com/2016/06/there-is-still-only-one-test.html
+
+![](images/downey_one_test.png)
+
+---
+
+&lt;iframe width="320" height="266" src="https://www.youtube.com/embed/5Dnw46eC-0o" title="John Rauser keynote: "Statistics Without the Agonizing Pain" -- Strata + Hadoop 2014" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+---
+
+&lt;iframe width="320" height="266" src="https://www.youtube.com/embed/S41zQEshs5k" title="There's Only One Test" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+
+
+---
+# Theory approach advocates elegant mathematical solutions...
+
+![](images/theres_a_stat_for_that.jpg)
+
+
+
+---
+class: inverse, center, middle
+
+## Bonus opportunity #1: react to material
+
+- ### tl;dr
+- ### til
+
+--
+
+## Bonus opportunity #2
+
+- ## 5 plots (10 points total)
+
+### `remotes::install_github("EvaMaeRey/ma206data")`
+### `remotes::install_github("EvaMaeRey/ggxmean")`
+
+
+---
+
+
+
+count: false
+ 
+
+.panel1-cars_scramble-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-cars_scramble-auto[
+
+```
+## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
+```
+
+```
+## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.6     ✓ dplyr   1.0.8
+## ✓ tidyr   1.0.2     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 3.6.2
+```
+
+```
+## Warning: package 'tibble' was built under R version 3.6.2
+```
+
+```
+## Warning: package 'purrr' was built under R version 3.6.2
+```
+
+```
+## Warning: package 'dplyr' was built under R version 3.6.2
+```
+
+```
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-auto[
+
+```r
+library(tidyverse)
+
+*cars
+```
+]
+ 
+.panel2-cars_scramble-auto[
+
+```
+##    speed dist
+## 1      4    2
+## 2      4   10
+## 3      7    4
+## 4      7   22
+## 5      8   16
+## 6      9   10
+## 7     10   18
+## 8     10   26
+## 9     10   34
+## 10    11   17
+## 11    11   28
+## 12    12   14
+## 13    12   20
+## 14    12   24
+## 15    12   28
+## 16    13   26
+## 17    13   34
+## 18    13   34
+## 19    13   46
+## 20    14   26
+## 21    14   36
+## 22    14   60
+## 23    14   80
+## 24    15   20
+## 25    15   26
+## 26    15   54
+## 27    16   32
+## 28    16   40
+## 29    17   32
+## 30    17   40
+## 31    17   50
+## 32    18   42
+## 33    18   56
+## 34    18   76
+## 35    18   84
+## 36    19   36
+## 37    19   46
+## 38    19   68
+## 39    20   32
+## 40    20   48
+## 41    20   52
+## 42    20   56
+## 43    20   64
+## 44    22   66
+## 45    23   54
+## 46    24   70
+## 47    24   92
+## 48    24   93
+## 49    24  120
+## 50    25   85
+```
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-auto[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+* ggplot()
+```
+]
+ 
+.panel2-cars_scramble-auto[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_auto_03_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-auto[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+* aes(x = speed)
+```
+]
+ 
+.panel2-cars_scramble-auto[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_auto_04_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-auto[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+* geom_rug(alpha = .25)
+```
+]
+ 
+.panel2-cars_scramble-auto[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_auto_05_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-auto[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+* aes(y = dist)
+```
+]
+ 
+.panel2-cars_scramble-auto[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_auto_06_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-auto[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+* ggsample::facet_scramble(n_facets = 1)
+```
+]
+ 
+.panel2-cars_scramble-auto[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_auto_07_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-auto[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+* geom_point()
+```
+]
+ 
+.panel2-cars_scramble-auto[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_auto_08_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-auto[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+* ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-auto[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_auto_09_output-1.png)&lt;!-- --&gt;
+]
+
+&lt;style&gt;
+.panel1-cars_scramble-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-cars_scramble-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-cars_scramble-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+---
+
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_01_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_02_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_03_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_04_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_05_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_06_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_07_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_08_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_09_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_10_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_11_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_12_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_13_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_14_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_15_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_16_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_17_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_18_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_19_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_20_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_21_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_22_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_23_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_24_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_25_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_26_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_27_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_28_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_29_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_30_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_31_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_32_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_33_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_34_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_35_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_36_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_37_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_38_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_39_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_40_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_41_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_42_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_43_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_44_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_45_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_46_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_47_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_48_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_49_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-cars_scramble-50[
+
+```r
+library(tidyverse)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  geom_rug(alpha = .25) +
+  aes(y = dist) +
+  ggsample::facet_scramble(n_facets = 1) +
+  geom_point() +
+  ggxmean:::geom_corrlabel()
+```
+]
+ 
+.panel2-cars_scramble-50[
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble_50_50_output-1.png)&lt;!-- --&gt;
+]
+
+&lt;style&gt;
+.panel1-cars_scramble-50 {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-cars_scramble-50 {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-cars_scramble-50 {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+
+
+---
+
+![](lesson_04_statistic_simulation_strength_files/figure-html/cars_scramble2-1.png)&lt;!-- --&gt;
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 100%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+&lt;/style&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"seal": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

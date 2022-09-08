@@ -1,0 +1,156 @@
+---
+title: "Lahman Baseball Project Example"
+subtitle: ""
+author: "Me"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r, include = F}
+# This is the recommended set up for flipbooks
+# you might think about setting cache to TRUE as you gain practice --- building flipbooks from scratch can be time consuming
+knitr::opts_chunk$set(fig.width = 6, fig.height = 4, message = F, warning = FALSE, comment = "", cache = F)
+
+options(tibble.print_min = 55)
+options(knitr.duplicate.label = "allow")
+options(width=300) # prevents data wrapping
+```
+
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 70%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+```
+
+
+---
+
+
+`r flipbookr::chunk_reveal("prep", left_assign = "detect")`
+
+
+```{r prep, message=F, warning=F, include = FALSE}
+library(tidyverse)
+library(Lahman)
+
+Teams %>%
+  filter(yearID == 2000) %>%
+  select(teamID, franchID,
+         divID, lgID, W, L, R, G, RA) %>% 
+  rename(wins = W, losses = L,
+         runs = R, games = G,
+         runs_opponent = RA) %>%
+  mutate(win_pct = wins/games) %>%
+  mutate(runs_differential = runs - runs_opponent) ->
+my_data
+```
+
+---
+
+
+`r flipbookr::chunk_reveal("glimpse", left_assign = "detect")`
+
+
+```{r glimpse, include = FALSE}
+my_data %>% 
+  head()
+```
+
+
+---
+
+
+`r flipbookr::chunk_reveal("viz", left_assign = "detect")`
+
+
+```{r viz, include = FALSE}
+my_data %>%
+  ggplot() +
+  aes(y = wins) +
+  aes(x = runs_differential) +
+  geom_rug() +
+  geom_point() +
+  geom_smooth(method = lm, se = F) +
+  ggxmean::geom_lm_formula() +
+  aes(color = lgID) +
+  facet_wrap(facets = vars(lgID))
+```
+
+
+---
+
+
+`r flipbookr::chunk_reveal("model", left_assign = "detect")`
+
+
+```{r model, include = FALSE}
+my_data %>%
+  lm(formula = wins ~ 
+       runs_differential + lgID +
+       lgID*runs_differential, data = .) %>% 
+  summary
+```
+
+---
+
+```{r, eval = F, echo= F}
+Lahman::Batting %>% 
+  filter(yearID == 2020) %>% 
+  rename(at_bats = AB,
+         runs = R,
+         strike_outs = SO) %>% 
+  mutate(runs_ratio = runs/at_bats) %>%
+  mutate(strike_outs_ratio = strike_outs/at_bats)
+  select(playerID, at_bats, runs, strike_outs, runs_ratio) %>% 
+  filter(at_bats != 0) ->
+batting_2020_runs
+  
+Lahman::People %>% 
+  select(playerID, birthYear, nameGiven, 
+         height, weight, bats) ->
+people_info
+
+batting_2020_runs %>% 
+  left_join(people_info, by = "playerID") ->
+batting_2020_w_player_info
+
+batting_2020_w_player_info %>% 
+  filter(at_bats > 20) %>% 
+  ggplot() + 
+  aes(y = runs_ratio) + 
+  aes(x = weight) + 
+  geom_rug() + 
+  geom_point(alpha = .1) + 
+  geom_smooth(method = lm) + 
+  aes(color = at_bats)
+
+batting_2020_w_player_info %>% 
+  lm(formula = runs_ratio ~ weight + height + birthYear, data = .) %>% 
+  summary()
+
+```

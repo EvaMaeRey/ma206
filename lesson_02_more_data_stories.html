@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>ma206, lesson 2</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+class: inverse, left, bottom
+background-image: url(https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1470&amp;q=80)
+background-size: cover
+# .Large[ma206data Lesson 2]
+## .small[More Storytelling with Data/Preliminaries]
+#### .tiny[Dr. Evangeline Reynolds | 2022-08-18 |Image credit: William Iven, Upsplash]
+???
+
+
+---
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 70%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+
+![](https://images.squarespace-cdn.com/content/v1/55b6a6dce4b089e11621d3ed/1573228476958-NL6J084ROMHLMXT9MTGI/logo.png?format=1500w)&lt;!-- --&gt;
+
+
+--
+
+![](https://images-na.ssl-images-amazon.com/images/I/41OonY0kRWL._SX218_BO1,204,203,200_QL40_FMwebp_.jpg)&lt;!-- --&gt;
+
+
+
+
+---
+
+### Step 1. Question
+
+### Step 2. Collect 
+
+### Step 3. Patterns (patterns relationship/comparison)
+
+### Step 4. Inference (Inference, statistical significance?)
+
+### Step 5. Generalize
+
+### Step 6. Limitations (Kai Zen)
+
+
+
+
+---
+
+# Visualization: 
+
+  - ## 'preattentive processing'
+
+--
+
+  - ## McGill and Cleveland (1984) - visualized data, with variables represented in visual scales (color, position, width, etc) channels (rather than data presented in tabular form) leads to effortless pattern detection...
+  
+---
+
+# Visual channels?
+
+![](https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png)&lt;!-- --&gt;
+
+---
+
+### 'Data Frame' - Every row defines an observational unit, every column defines a variable
+
+--
+
+### Observational unit - person, thing, event being observed
+
+--
+
+### Variable - observational characteristics/measurements (columns in Dataframe)
+
+--
+
+### variable types:
+
+--
+
+#### categorical/qualitative - binary, (binomial), multinomial, free response, ordered categories.
+
+--
+
+#### quantitative/numeric - double (decimal), integer, logical/boolean/indicator/dummy (yes/no)
+
+---
+
+# Hans Rosling presentation
+
+--
+
+&lt;iframe width="767" height="431" src="https://www.youtube.com/embed/jbkSRLYSojo?list=PL6F8D7054D12E7C5A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+https://www.youtube.com/embed/jbkSRLYSojo?list=PL6F8D7054D12E7C5A
+
+---
+class: inverse, center, middle
+
+# Who's the better story teller?
+
+--
+
+## Tintle (isi/wiley) or Rosling (youtube)?
+
+--
+
+## Write you answer down privately
+
+--
+
+## Show your neighbor
+
+---
+
+
+# Why?
+
+
+
+---
+
+count: false
+
+
+
+---
+count: false
+
+
+```
+# A tibble: 1,704 × 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+11 Afghanistan Asia       2002    42.1 25268405      727.
+12 Afghanistan Asia       2007    43.8 31889923      975.
+13 Albania     Europe     1952    55.2  1282697     1601.
+14 Albania     Europe     1957    59.3  1476505     1942.
+15 Albania     Europe     1962    64.8  1728137     2313.
+16 Albania     Europe     1967    66.2  1984060     2760.
+17 Albania     Europe     1972    67.7  2263554     3313.
+18 Albania     Europe     1977    68.9  2509048     3533.
+19 Albania     Europe     1982    70.4  2780097     3631.
+20 Albania     Europe     1987    72    3075321     3739.
+21 Albania     Europe     1992    71.6  3326498     2497.
+22 Albania     Europe     1997    73.0  3428038     3193.
+23 Albania     Europe     2002    75.7  3508512     4604.
+24 Albania     Europe     2007    76.4  3600523     5937.
+25 Algeria     Africa     1952    43.1  9279525     2449.
+26 Algeria     Africa     1957    45.7 10270856     3014.
+27 Algeria     Africa     1962    48.3 11000948     2551.
+28 Algeria     Africa     1967    51.4 12760499     3247.
+29 Algeria     Africa     1972    54.5 14760787     4183.
+30 Algeria     Africa     1977    58.0 17152804     4910.
+31 Algeria     Africa     1982    61.4 20033753     5745.
+32 Algeria     Africa     1987    65.8 23254956     5681.
+33 Algeria     Africa     1992    67.7 26298373     5023.
+34 Algeria     Africa     1997    69.2 29072015     4797.
+35 Algeria     Africa     2002    71.0 31287142     5288.
+36 Algeria     Africa     2007    72.3 33333216     6223.
+37 Angola      Africa     1952    30.0  4232095     3521.
+38 Angola      Africa     1957    32.0  4561361     3828.
+39 Angola      Africa     1962    34    4826015     4269.
+40 Angola      Africa     1967    36.0  5247469     5523.
+41 Angola      Africa     1972    37.9  5894858     5473.
+42 Angola      Africa     1977    39.5  6162675     3009.
+43 Angola      Africa     1982    39.9  7016384     2757.
+44 Angola      Africa     1987    39.9  7874230     2430.
+45 Angola      Africa     1992    40.6  8735988     2628.
+46 Angola      Africa     1997    41.0  9875024     2277.
+47 Angola      Africa     2002    41.0 10866106     2773.
+48 Angola      Africa     2007    42.7 12420476     4797.
+49 Argentina   Americas   1952    62.5 17876956     5911.
+50 Argentina   Americas   1957    64.4 19610538     6857.
+51 Argentina   Americas   1962    65.1 21283783     7133.
+52 Argentina   Americas   1967    65.6 22934225     8053.
+53 Argentina   Americas   1972    67.1 24779799     9443.
+54 Argentina   Americas   1977    68.5 26983828    10079.
+55 Argentina   Americas   1982    69.9 29341374     8998.
+# … with 1,649 more rows
+```
+
+---
+count: false
+
+
+```
+# A tibble: 142 × 6
+   country                  continent  year lifeExp        pop gdpPercap
+   &lt;fct&gt;                    &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan              Asia       2002    42.1   25268405      727.
+ 2 Albania                  Europe     2002    75.7    3508512     4604.
+ 3 Algeria                  Africa     2002    71.0   31287142     5288.
+ 4 Angola                   Africa     2002    41.0   10866106     2773.
+ 5 Argentina                Americas   2002    74.3   38331121     8798.
+ 6 Australia                Oceania    2002    80.4   19546792    30688.
+ 7 Austria                  Europe     2002    79.0    8148312    32418.
+ 8 Bahrain                  Asia       2002    74.8     656397    23404.
+ 9 Bangladesh               Asia       2002    62.0  135656790     1136.
+10 Belgium                  Europe     2002    78.3   10311970    30486.
+11 Benin                    Africa     2002    54.4    7026113     1373.
+12 Bolivia                  Americas   2002    63.9    8445134     3413.
+13 Bosnia and Herzegovina   Europe     2002    74.1    4165416     6019.
+14 Botswana                 Africa     2002    46.6    1630347    11004.
+15 Brazil                   Americas   2002    71.0  179914212     8131.
+16 Bulgaria                 Europe     2002    72.1    7661799     7697.
+17 Burkina Faso             Africa     2002    50.6   12251209     1038.
+18 Burundi                  Africa     2002    47.4    7021078      446.
+19 Cambodia                 Asia       2002    56.8   12926707      896.
+20 Cameroon                 Africa     2002    49.9   15929988     1934.
+21 Canada                   Americas   2002    79.8   31902268    33329.
+22 Central African Republic Africa     2002    43.3    4048013      739.
+23 Chad                     Africa     2002    50.5    8835739     1156.
+24 Chile                    Americas   2002    77.9   15497046    10779.
+25 China                    Asia       2002    72.0 1280400000     3119.
+26 Colombia                 Americas   2002    71.7   41008227     5755.
+27 Comoros                  Africa     2002    63.0     614382     1076.
+28 Congo, Dem. Rep.         Africa     2002    45.0   55379852      241.
+29 Congo, Rep.              Africa     2002    53.0    3328795     3484.
+30 Costa Rica               Americas   2002    78.1    3834934     7723.
+31 Cote d'Ivoire            Africa     2002    46.8   16252726     1649.
+32 Croatia                  Europe     2002    74.9    4481020    11628.
+33 Cuba                     Americas   2002    77.2   11226999     6341.
+34 Czech Republic           Europe     2002    75.5   10256295    17596.
+35 Denmark                  Europe     2002    77.2    5374693    32167.
+36 Djibouti                 Africa     2002    53.4     447416     1908.
+37 Dominican Republic       Americas   2002    70.8    8650322     4564.
+38 Ecuador                  Americas   2002    74.2   12921234     5773.
+39 Egypt                    Africa     2002    69.8   73312559     4755.
+40 El Salvador              Americas   2002    70.7    6353681     5352.
+41 Equatorial Guinea        Africa     2002    49.3     495627     7703.
+42 Eritrea                  Africa     2002    55.2    4414865      765.
+43 Ethiopia                 Africa     2002    50.7   67946797      530.
+44 Finland                  Europe     2002    78.4    5193039    28205.
+45 France                   Europe     2002    79.6   59925035    28926.
+46 Gabon                    Africa     2002    56.8    1299304    12522.
+47 Gambia                   Africa     2002    58.0    1457766      661.
+48 Germany                  Europe     2002    78.7   82350671    30036.
+49 Ghana                    Africa     2002    58.5   20550751     1112.
+50 Greece                   Europe     2002    78.3   10603863    22514.
+51 Guatemala                Americas   2002    69.0   11178650     4858.
+52 Guinea                   Africa     2002    53.7    8807818      946.
+53 Guinea-Bissau            Africa     2002    45.5    1332459      576.
+54 Haiti                    Americas   2002    58.1    7607651     1270.
+55 Honduras                 Americas   2002    68.6    6677328     3100.
+# … with 87 more rows
+```
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_04_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_05_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_06_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_07_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_08_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_09_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_10_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_11_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_12_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_13_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_14_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_15_output-1.png)&lt;!-- --&gt;
+
+---
+count: false
+
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_16_output-1.png)&lt;!-- --&gt;
+
+&lt;style&gt;
+.panel1-hans-auto {
+  color: black;
+  width: 99%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-hans-auto {
+  color: black;
+  width: NA%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-hans-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Rosling takes you on his analytic journey.
+
+--
+
+# This is how I built my plot. 
+
+--
+
+# These are the characters...
+
+
+
+---
+
+## Promise of ggplot2?
+
+--
+
+## 'Speak your plot into existence' 
+
+--
+
+# - Thomas Lin Pederson 
+--
+ggplot2 core team
+
+--
+
+# '... we [use] the grammar to learn how to create graphical "poems".'
+--
+ Hadley Wickham, ggplot2 creator
+ 
+---
+
+## grammar of graphics
+
+--
+
+### Identifies graphical components
+
+--
+
+### makes those components independent for natural, flexible composition of plots!
+
+
+
+
+--
+
+# Boards!
+
+
+
+
+
+
+---
+
+- ## country_data %&gt;% 
+- ##   filter(year == 2002) -&gt;
+- ## country_data_2002
+
+
+- ## ggplot(data = country_data_2002) 
+
+- ## geom_point()
+
+- ## aes(color = continent)
+- ## aes(size = pop/1000000) 
+- ## aes(x = gdpPercap)
+- ## aes(y = lifeExp)
+
+- ## labs(title = "Life expectancy vs Per Capita GDP in 2002")
+- ## labs(x = "Per Capita GDP ($US)")  
+- ## labs(y = "Life expecancy (years)") 
+- ## labs(caption = "Produced for MA206 in Fall AY2023")
+- ## labs(subtitle = "Data Source: gapminder package") 
+- ## labs(color = NULL)
+- ## labs(size = "Population\n(millions)") 
+
+---
+
+# Visual channels?
+
+![](https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png)&lt;!-- --&gt;
+
+
+
+
+---
+
+background-image: url(images/paste-A8314E33.png)
+background-size: cover
+
+---
+
+background-image: url(images/paste-D46A77DF.png)
+background-size: cover
+
+---
+
+
+background-image: url(images/paste-CAD8C893.png)
+background-size: cover
+
+---
+
+background-image: url(images/paste-DC46E991.png)
+background-size: cover
+
+
+
+---
+
+# Hans walks us through how each visual channel that will represent the data!
+
+---
+
+![](https://clauswilke.com/dataviz/aesthetic_mapping_files/figure-html/common-aesthetics-1.png)
+---
+
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-hans-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+*gapminder::gapminder
+```
+]
+ 
+.panel2-hans-auto[
+
+```
+# A tibble: 1,704 × 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+11 Afghanistan Asia       2002    42.1 25268405      727.
+12 Afghanistan Asia       2007    43.8 31889923      975.
+13 Albania     Europe     1952    55.2  1282697     1601.
+14 Albania     Europe     1957    59.3  1476505     1942.
+15 Albania     Europe     1962    64.8  1728137     2313.
+16 Albania     Europe     1967    66.2  1984060     2760.
+17 Albania     Europe     1972    67.7  2263554     3313.
+18 Albania     Europe     1977    68.9  2509048     3533.
+19 Albania     Europe     1982    70.4  2780097     3631.
+20 Albania     Europe     1987    72    3075321     3739.
+21 Albania     Europe     1992    71.6  3326498     2497.
+22 Albania     Europe     1997    73.0  3428038     3193.
+23 Albania     Europe     2002    75.7  3508512     4604.
+24 Albania     Europe     2007    76.4  3600523     5937.
+25 Algeria     Africa     1952    43.1  9279525     2449.
+26 Algeria     Africa     1957    45.7 10270856     3014.
+27 Algeria     Africa     1962    48.3 11000948     2551.
+28 Algeria     Africa     1967    51.4 12760499     3247.
+29 Algeria     Africa     1972    54.5 14760787     4183.
+30 Algeria     Africa     1977    58.0 17152804     4910.
+31 Algeria     Africa     1982    61.4 20033753     5745.
+32 Algeria     Africa     1987    65.8 23254956     5681.
+33 Algeria     Africa     1992    67.7 26298373     5023.
+34 Algeria     Africa     1997    69.2 29072015     4797.
+35 Algeria     Africa     2002    71.0 31287142     5288.
+36 Algeria     Africa     2007    72.3 33333216     6223.
+37 Angola      Africa     1952    30.0  4232095     3521.
+38 Angola      Africa     1957    32.0  4561361     3828.
+39 Angola      Africa     1962    34    4826015     4269.
+40 Angola      Africa     1967    36.0  5247469     5523.
+41 Angola      Africa     1972    37.9  5894858     5473.
+42 Angola      Africa     1977    39.5  6162675     3009.
+43 Angola      Africa     1982    39.9  7016384     2757.
+44 Angola      Africa     1987    39.9  7874230     2430.
+45 Angola      Africa     1992    40.6  8735988     2628.
+46 Angola      Africa     1997    41.0  9875024     2277.
+47 Angola      Africa     2002    41.0 10866106     2773.
+48 Angola      Africa     2007    42.7 12420476     4797.
+49 Argentina   Americas   1952    62.5 17876956     5911.
+50 Argentina   Americas   1957    64.4 19610538     6857.
+51 Argentina   Americas   1962    65.1 21283783     7133.
+52 Argentina   Americas   1967    65.6 22934225     8053.
+53 Argentina   Americas   1972    67.1 24779799     9443.
+54 Argentina   Americas   1977    68.5 26983828    10079.
+55 Argentina   Americas   1982    69.9 29341374     8998.
+# … with 1,649 more rows
+```
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+* filter(year == 2002)
+```
+]
+ 
+.panel2-hans-auto[
+
+```
+# A tibble: 142 × 6
+   country                  continent  year lifeExp        pop gdpPercap
+   &lt;fct&gt;                    &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan              Asia       2002    42.1   25268405      727.
+ 2 Albania                  Europe     2002    75.7    3508512     4604.
+ 3 Algeria                  Africa     2002    71.0   31287142     5288.
+ 4 Angola                   Africa     2002    41.0   10866106     2773.
+ 5 Argentina                Americas   2002    74.3   38331121     8798.
+ 6 Australia                Oceania    2002    80.4   19546792    30688.
+ 7 Austria                  Europe     2002    79.0    8148312    32418.
+ 8 Bahrain                  Asia       2002    74.8     656397    23404.
+ 9 Bangladesh               Asia       2002    62.0  135656790     1136.
+10 Belgium                  Europe     2002    78.3   10311970    30486.
+11 Benin                    Africa     2002    54.4    7026113     1373.
+12 Bolivia                  Americas   2002    63.9    8445134     3413.
+13 Bosnia and Herzegovina   Europe     2002    74.1    4165416     6019.
+14 Botswana                 Africa     2002    46.6    1630347    11004.
+15 Brazil                   Americas   2002    71.0  179914212     8131.
+16 Bulgaria                 Europe     2002    72.1    7661799     7697.
+17 Burkina Faso             Africa     2002    50.6   12251209     1038.
+18 Burundi                  Africa     2002    47.4    7021078      446.
+19 Cambodia                 Asia       2002    56.8   12926707      896.
+20 Cameroon                 Africa     2002    49.9   15929988     1934.
+21 Canada                   Americas   2002    79.8   31902268    33329.
+22 Central African Republic Africa     2002    43.3    4048013      739.
+23 Chad                     Africa     2002    50.5    8835739     1156.
+24 Chile                    Americas   2002    77.9   15497046    10779.
+25 China                    Asia       2002    72.0 1280400000     3119.
+26 Colombia                 Americas   2002    71.7   41008227     5755.
+27 Comoros                  Africa     2002    63.0     614382     1076.
+28 Congo, Dem. Rep.         Africa     2002    45.0   55379852      241.
+29 Congo, Rep.              Africa     2002    53.0    3328795     3484.
+30 Costa Rica               Americas   2002    78.1    3834934     7723.
+31 Cote d'Ivoire            Africa     2002    46.8   16252726     1649.
+32 Croatia                  Europe     2002    74.9    4481020    11628.
+33 Cuba                     Americas   2002    77.2   11226999     6341.
+34 Czech Republic           Europe     2002    75.5   10256295    17596.
+35 Denmark                  Europe     2002    77.2    5374693    32167.
+36 Djibouti                 Africa     2002    53.4     447416     1908.
+37 Dominican Republic       Americas   2002    70.8    8650322     4564.
+38 Ecuador                  Americas   2002    74.2   12921234     5773.
+39 Egypt                    Africa     2002    69.8   73312559     4755.
+40 El Salvador              Americas   2002    70.7    6353681     5352.
+41 Equatorial Guinea        Africa     2002    49.3     495627     7703.
+42 Eritrea                  Africa     2002    55.2    4414865      765.
+43 Ethiopia                 Africa     2002    50.7   67946797      530.
+44 Finland                  Europe     2002    78.4    5193039    28205.
+45 France                   Europe     2002    79.6   59925035    28926.
+46 Gabon                    Africa     2002    56.8    1299304    12522.
+47 Gambia                   Africa     2002    58.0    1457766      661.
+48 Germany                  Europe     2002    78.7   82350671    30036.
+49 Ghana                    Africa     2002    58.5   20550751     1112.
+50 Greece                   Europe     2002    78.3   10603863    22514.
+51 Guatemala                Americas   2002    69.0   11178650     4858.
+52 Guinea                   Africa     2002    53.7    8807818      946.
+53 Guinea-Bissau            Africa     2002    45.5    1332459      576.
+54 Haiti                    Americas   2002    58.1    7607651     1270.
+55 Honduras                 Americas   2002    68.6    6677328     3100.
+# … with 87 more rows
+```
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+* ggplot()
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_04_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+* aes(x = gdpPercap)
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_05_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+* aes(y = lifeExp)
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_06_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+* geom_point()
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_07_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+* aes(color = continent)
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_08_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  aes(color = continent) +
+* aes(size = pop/1000000)
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_09_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  aes(color = continent) +
+  aes(size = pop/1000000) +
+* labs(size = "Population\n(millions)")
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_10_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  aes(color = continent) +
+  aes(size = pop/1000000) +
+  labs(size = "Population\n(millions)") +
+* labs(color = NULL)
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_11_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  aes(color = continent) +
+  aes(size = pop/1000000) +
+  labs(size = "Population\n(millions)") +
+  labs(color = NULL) +
+* labs(x = "Per Capita GDP ($US)")
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_12_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  aes(color = continent) +
+  aes(size = pop/1000000) +
+  labs(size = "Population\n(millions)") +
+  labs(color = NULL) +
+  labs(x = "Per Capita GDP ($US)") +
+* labs(y = "Life expecancy (years)")
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_13_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  aes(color = continent) +
+  aes(size = pop/1000000) +
+  labs(size = "Population\n(millions)") +
+  labs(color = NULL) +
+  labs(x = "Per Capita GDP ($US)") +
+  labs(y = "Life expecancy (years)") +
+* labs(title = "Life expectancy vs Per Capita GDP, 2002")
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_14_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  aes(color = continent) +
+  aes(size = pop/1000000) +
+  labs(size = "Population\n(millions)") +
+  labs(color = NULL) +
+  labs(x = "Per Capita GDP ($US)") +
+  labs(y = "Life expecancy (years)") +
+  labs(title = "Life expectancy vs Per Capita GDP, 2002") +
+* labs(subtitle = "Data Source: gapminder package")
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_15_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-hans-auto[
+
+```r
+library(tidyverse)
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(x = gdpPercap) +
+  aes(y = lifeExp) +
+  geom_point() +
+  aes(color = continent) +
+  aes(size = pop/1000000) +
+  labs(size = "Population\n(millions)") +
+  labs(color = NULL) +
+  labs(x = "Per Capita GDP ($US)") +
+  labs(y = "Life expecancy (years)") +
+  labs(title = "Life expectancy vs Per Capita GDP, 2002") +
+  labs(subtitle = "Data Source: gapminder package") +
+* labs(caption = "Produced for MA206 in Fall AY2023")
+```
+]
+ 
+.panel2-hans-auto[
+![](lesson_02_more_data_stories_files/figure-html/hans_auto_16_output-1.png)&lt;!-- --&gt;
+]
+
+&lt;style&gt;
+.panel1-hans-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-hans-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-hans-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+count: false
+ 
+
+.panel1-possible_relationships-auto[
+
+```r
+*gapminder::gapminder
+```
+]
+ 
+.panel2-possible_relationships-auto[
+
+```
+# A tibble: 1,704 × 6
+   country     continent  year lifeExp      pop gdpPercap
+   &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan Asia       1952    28.8  8425333      779.
+ 2 Afghanistan Asia       1957    30.3  9240934      821.
+ 3 Afghanistan Asia       1962    32.0 10267083      853.
+ 4 Afghanistan Asia       1967    34.0 11537966      836.
+ 5 Afghanistan Asia       1972    36.1 13079460      740.
+ 6 Afghanistan Asia       1977    38.4 14880372      786.
+ 7 Afghanistan Asia       1982    39.9 12881816      978.
+ 8 Afghanistan Asia       1987    40.8 13867957      852.
+ 9 Afghanistan Asia       1992    41.7 16317921      649.
+10 Afghanistan Asia       1997    41.8 22227415      635.
+11 Afghanistan Asia       2002    42.1 25268405      727.
+12 Afghanistan Asia       2007    43.8 31889923      975.
+13 Albania     Europe     1952    55.2  1282697     1601.
+14 Albania     Europe     1957    59.3  1476505     1942.
+15 Albania     Europe     1962    64.8  1728137     2313.
+16 Albania     Europe     1967    66.2  1984060     2760.
+17 Albania     Europe     1972    67.7  2263554     3313.
+18 Albania     Europe     1977    68.9  2509048     3533.
+19 Albania     Europe     1982    70.4  2780097     3631.
+20 Albania     Europe     1987    72    3075321     3739.
+21 Albania     Europe     1992    71.6  3326498     2497.
+22 Albania     Europe     1997    73.0  3428038     3193.
+23 Albania     Europe     2002    75.7  3508512     4604.
+24 Albania     Europe     2007    76.4  3600523     5937.
+25 Algeria     Africa     1952    43.1  9279525     2449.
+26 Algeria     Africa     1957    45.7 10270856     3014.
+27 Algeria     Africa     1962    48.3 11000948     2551.
+28 Algeria     Africa     1967    51.4 12760499     3247.
+29 Algeria     Africa     1972    54.5 14760787     4183.
+30 Algeria     Africa     1977    58.0 17152804     4910.
+31 Algeria     Africa     1982    61.4 20033753     5745.
+32 Algeria     Africa     1987    65.8 23254956     5681.
+33 Algeria     Africa     1992    67.7 26298373     5023.
+34 Algeria     Africa     1997    69.2 29072015     4797.
+35 Algeria     Africa     2002    71.0 31287142     5288.
+36 Algeria     Africa     2007    72.3 33333216     6223.
+37 Angola      Africa     1952    30.0  4232095     3521.
+38 Angola      Africa     1957    32.0  4561361     3828.
+39 Angola      Africa     1962    34    4826015     4269.
+40 Angola      Africa     1967    36.0  5247469     5523.
+41 Angola      Africa     1972    37.9  5894858     5473.
+42 Angola      Africa     1977    39.5  6162675     3009.
+43 Angola      Africa     1982    39.9  7016384     2757.
+44 Angola      Africa     1987    39.9  7874230     2430.
+45 Angola      Africa     1992    40.6  8735988     2628.
+46 Angola      Africa     1997    41.0  9875024     2277.
+47 Angola      Africa     2002    41.0 10866106     2773.
+48 Angola      Africa     2007    42.7 12420476     4797.
+49 Argentina   Americas   1952    62.5 17876956     5911.
+50 Argentina   Americas   1957    64.4 19610538     6857.
+51 Argentina   Americas   1962    65.1 21283783     7133.
+52 Argentina   Americas   1967    65.6 22934225     8053.
+53 Argentina   Americas   1972    67.1 24779799     9443.
+54 Argentina   Americas   1977    68.5 26983828    10079.
+55 Argentina   Americas   1982    69.9 29341374     8998.
+# … with 1,649 more rows
+```
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-auto[
+
+```r
+gapminder::gapminder %&gt;%
+* filter(year == 2002)
+```
+]
+ 
+.panel2-possible_relationships-auto[
+
+```
+# A tibble: 142 × 6
+   country                  continent  year lifeExp        pop gdpPercap
+   &lt;fct&gt;                    &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;
+ 1 Afghanistan              Asia       2002    42.1   25268405      727.
+ 2 Albania                  Europe     2002    75.7    3508512     4604.
+ 3 Algeria                  Africa     2002    71.0   31287142     5288.
+ 4 Angola                   Africa     2002    41.0   10866106     2773.
+ 5 Argentina                Americas   2002    74.3   38331121     8798.
+ 6 Australia                Oceania    2002    80.4   19546792    30688.
+ 7 Austria                  Europe     2002    79.0    8148312    32418.
+ 8 Bahrain                  Asia       2002    74.8     656397    23404.
+ 9 Bangladesh               Asia       2002    62.0  135656790     1136.
+10 Belgium                  Europe     2002    78.3   10311970    30486.
+11 Benin                    Africa     2002    54.4    7026113     1373.
+12 Bolivia                  Americas   2002    63.9    8445134     3413.
+13 Bosnia and Herzegovina   Europe     2002    74.1    4165416     6019.
+14 Botswana                 Africa     2002    46.6    1630347    11004.
+15 Brazil                   Americas   2002    71.0  179914212     8131.
+16 Bulgaria                 Europe     2002    72.1    7661799     7697.
+17 Burkina Faso             Africa     2002    50.6   12251209     1038.
+18 Burundi                  Africa     2002    47.4    7021078      446.
+19 Cambodia                 Asia       2002    56.8   12926707      896.
+20 Cameroon                 Africa     2002    49.9   15929988     1934.
+21 Canada                   Americas   2002    79.8   31902268    33329.
+22 Central African Republic Africa     2002    43.3    4048013      739.
+23 Chad                     Africa     2002    50.5    8835739     1156.
+24 Chile                    Americas   2002    77.9   15497046    10779.
+25 China                    Asia       2002    72.0 1280400000     3119.
+26 Colombia                 Americas   2002    71.7   41008227     5755.
+27 Comoros                  Africa     2002    63.0     614382     1076.
+28 Congo, Dem. Rep.         Africa     2002    45.0   55379852      241.
+29 Congo, Rep.              Africa     2002    53.0    3328795     3484.
+30 Costa Rica               Americas   2002    78.1    3834934     7723.
+31 Cote d'Ivoire            Africa     2002    46.8   16252726     1649.
+32 Croatia                  Europe     2002    74.9    4481020    11628.
+33 Cuba                     Americas   2002    77.2   11226999     6341.
+34 Czech Republic           Europe     2002    75.5   10256295    17596.
+35 Denmark                  Europe     2002    77.2    5374693    32167.
+36 Djibouti                 Africa     2002    53.4     447416     1908.
+37 Dominican Republic       Americas   2002    70.8    8650322     4564.
+38 Ecuador                  Americas   2002    74.2   12921234     5773.
+39 Egypt                    Africa     2002    69.8   73312559     4755.
+40 El Salvador              Americas   2002    70.7    6353681     5352.
+41 Equatorial Guinea        Africa     2002    49.3     495627     7703.
+42 Eritrea                  Africa     2002    55.2    4414865      765.
+43 Ethiopia                 Africa     2002    50.7   67946797      530.
+44 Finland                  Europe     2002    78.4    5193039    28205.
+45 France                   Europe     2002    79.6   59925035    28926.
+46 Gabon                    Africa     2002    56.8    1299304    12522.
+47 Gambia                   Africa     2002    58.0    1457766      661.
+48 Germany                  Europe     2002    78.7   82350671    30036.
+49 Ghana                    Africa     2002    58.5   20550751     1112.
+50 Greece                   Europe     2002    78.3   10603863    22514.
+51 Guatemala                Americas   2002    69.0   11178650     4858.
+52 Guinea                   Africa     2002    53.7    8807818      946.
+53 Guinea-Bissau            Africa     2002    45.5    1332459      576.
+54 Haiti                    Americas   2002    58.1    7607651     1270.
+55 Honduras                 Americas   2002    68.6    6677328     3100.
+# … with 87 more rows
+```
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+* ggplot()
+```
+]
+ 
+.panel2-possible_relationships-auto[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_auto_03_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+* aes(y = lifeExp)
+```
+]
+ 
+.panel2-possible_relationships-auto[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_auto_04_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+* geom_rug()
+```
+]
+ 
+.panel2-possible_relationships-auto[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_auto_05_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+* aes(x = gdpPercap)
+```
+]
+ 
+.panel2-possible_relationships-auto[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_auto_06_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-auto[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+* ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-auto[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_auto_07_output-1.png)&lt;!-- --&gt;
+]
+
+&lt;style&gt;
+.panel1-possible_relationships-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-possible_relationships-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-possible_relationships-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+---
+
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_01_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_02_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_03_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_04_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_05_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_06_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_07_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_08_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_09_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-possible_relationships-10[
+
+```r
+gapminder::gapminder %&gt;%
+  filter(year == 2002) %&gt;%
+  ggplot() +
+  aes(y = lifeExp) +
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+]
+ 
+.panel2-possible_relationships-10[
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships_10_10_output-1.png)&lt;!-- --&gt;
+]
+
+&lt;style&gt;
+.panel1-possible_relationships-10 {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-possible_relationships-10 {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-possible_relationships-10 {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+```r
+gapminder::gapminder %&gt;% 
+  filter(year == 2002) %&gt;% 
+  ggplot() + 
+  aes(y = lifeExp) + 
+  geom_rug() +
+  aes(x = gdpPercap) +
+  ggsample::geom_point_scramble()
+```
+
+![](lesson_02_more_data_stories_files/figure-html/possible_relationships-1.png)&lt;!-- --&gt;
+
+
+
+---
+
+![](images/ma206datahex.png)
+
+---
+class: inverse, middle, center
+
+`install.packages("remotes")`
+
+`install.github("EvaMaeRey/ma206data")`
+
+
+---
+class: center, middle, inverse
+
+# Figure 2.2
+
+
+---
+class: middle, center, inverse
+
+
+# Let's bend it like Hans Rosling (w/ national anthem data)
+
+--
+
+# class live coding
+
+---
+
+
+count: false
+ 
+
+.panel1-fig_2_2-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-fig_2_2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-fig_2_2-auto[
+
+```r
+library(tidyverse)
+*library(ma206data)
+```
+]
+ 
+.panel2-fig_2_2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-fig_2_2-auto[
+
+```r
+library(tidyverse)
+library(ma206data)
+
+*cars
+```
+]
+ 
+.panel2-fig_2_2-auto[
+
+```
+   speed dist
+1      4    2
+2      4   10
+3      7    4
+4      7   22
+5      8   16
+6      9   10
+7     10   18
+8     10   26
+9     10   34
+10    11   17
+11    11   28
+12    12   14
+13    12   20
+14    12   24
+15    12   28
+16    13   26
+17    13   34
+18    13   34
+19    13   46
+20    14   26
+21    14   36
+22    14   60
+23    14   80
+24    15   20
+25    15   26
+26    15   54
+27    16   32
+28    16   40
+29    17   32
+30    17   40
+31    17   50
+32    18   42
+33    18   56
+34    18   76
+35    18   84
+36    19   36
+37    19   46
+38    19   68
+39    20   32
+40    20   48
+41    20   52
+42    20   56
+43    20   64
+44    22   66
+45    23   54
+46    24   70
+47    24   92
+48    24   93
+49    24  120
+50    25   85
+```
+]
+
+---
+count: false
+ 
+
+.panel1-fig_2_2-auto[
+
+```r
+library(tidyverse)
+library(ma206data)
+
+cars %&gt;%
+* ggplot()
+```
+]
+ 
+.panel2-fig_2_2-auto[
+![](lesson_02_more_data_stories_files/figure-html/fig_2_2_auto_04_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-fig_2_2-auto[
+
+```r
+library(tidyverse)
+library(ma206data)
+
+cars %&gt;%
+  ggplot() +
+* aes(x = speed)
+```
+]
+ 
+.panel2-fig_2_2-auto[
+![](lesson_02_more_data_stories_files/figure-html/fig_2_2_auto_05_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-fig_2_2-auto[
+
+```r
+library(tidyverse)
+library(ma206data)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+* aes(y = dist)
+```
+]
+ 
+.panel2-fig_2_2-auto[
+![](lesson_02_more_data_stories_files/figure-html/fig_2_2_auto_06_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-fig_2_2-auto[
+
+```r
+library(tidyverse)
+library(ma206data)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+* geom_rug()
+```
+]
+ 
+.panel2-fig_2_2-auto[
+![](lesson_02_more_data_stories_files/figure-html/fig_2_2_auto_07_output-1.png)&lt;!-- --&gt;
+]
+
+---
+count: false
+ 
+
+.panel1-fig_2_2-auto[
+
+```r
+library(tidyverse)
+library(ma206data)
+
+cars %&gt;%
+  ggplot() +
+  aes(x = speed) +
+  aes(y = dist) +
+  geom_rug() +
+* geom_point()
+```
+]
+ 
+.panel2-fig_2_2-auto[
+![](lesson_02_more_data_stories_files/figure-html/fig_2_2_auto_08_output-1.png)&lt;!-- --&gt;
+]
+
+&lt;style&gt;
+.panel1-fig_2_2-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-fig_2_2-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-fig_2_2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+---
+
+Blackboard -&gt; Course Surveys -&gt; Initial course Survey
+
+
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 100%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+&lt;/style&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"seal": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

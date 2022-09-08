@@ -1,0 +1,115 @@
+---
+title: "lesson 08"
+subtitle: ""
+author: ""
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+options(scipen = 10)
+library(flipbookr)
+```
+
+---
+
+
+
+class: inverse, left, bottom
+background-image: url(https://images.unsplash.com/photo-1501641466388-c67e34ec767e?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8b2xkJTIwZmFpdGhmdWx8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)
+background-size: cover
+
+# .Large[]
+
+## .small[]
+#### .tiny[Dr. Evangeline Reynolds | Meeting 4 | 2021-02-02 | Image credit: Emily Campbell, Upsplash]
+
+
+
+
+---
+
+`r flipbookr::chunk_reveal("observed_statistic")`
+
+
+```{r observed_statistic, include=F}
+library(tidyverse)
+
+ma206data::chap2_SnippetEstimate ->
+  Elapsed.Time
+
+ggplot(data = Elapsed.Time) + 
+  aes(x = estimate) + 
+  geom_dotplot() + 
+  ggxmean::geom_x_mean() + 
+  ggxmean::geom_x_mean_label() + 
+  ggxmean::geom_x_median(linetype = "dashed")
+
+
+
+
+```
+
+---
+
+`r chunk_reveal("calcs")`
+
+```{r calcs, include = F}
+Elapsed.Time %>% 
+  summarise(
+    mean = mean(estimate), 
+    s = sd(estimate),
+    n = n()
+  )
+
+xbar = 13.7
+s = 6.5
+n = 48
+sd = s/sqrt(n) 
+null = 10
+t = (xbar-null)/sd
+t
+
+pvalue = 2*(1-pt(abs(t), n-1))
+
+pvalue
+
+```
+
+
+
+
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 120%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+```
+
+
+

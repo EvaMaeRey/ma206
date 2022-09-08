@@ -1,0 +1,591 @@
+---
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, xaringan-themer.css]
+    seal: false
+    nature:
+      beforeInit: "https://platform.twitter.com/widgets.js"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class: inverse, left, bottom
+background-image: url(https://images.unsplash.com/photo-1601039834020-62e7a2a54e07?ixid=MXwxMjA3fDB8MHxzZWFyY2h8NDZ8fGJveGluZyUyMG9seW1waWNzfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60)
+background-size: cover
+
+# .Large[theory based method and central limit theorem]
+
+## .small[]
+#### .tiny[Dr. Evangeline Reynolds | Meeting 6 | 2021-02-08 | Image credit: Jonathan Thomas, Upsplash]
+
+
+???
+
+Title slide
+
+
+
+```{r, echo = F}
+doc_type <- "pres"
+library(flipbookr)
+library(madlibs)
+```
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+
+xaringanthemer::mono_light(
+  # base_color = "#4c5253",
+  # header_font_google = google_font("Josefin Sans"),
+  # text_font_google   = google_font("Josefin Sans", "200", "200i"),
+  # code_font_google   = google_font("Droid Mono"),
+  text_font_size = ".8cm",
+  code_font_size = ".35cm")
+  
+```
+
+```{r, echo = F}
+knitr::opts_chunk$set(message = F, warning = F, comment = "", fig.height = 6, echo = F)
+```
+
+
+<!-- <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Hinman_collator.jpg" width="150px"/> -->
+
+
+
+---
+
+
+```{r}
+# knitr::include_graphics("images_for_lecture/pearson_and_galton.jpg")
+```
+
+
+
+
+---
+
+# Agenda
+
+- Housekeeping
+
+  - Eye dominance Exploration Exercise #1 due next Tuesday (10 points)
+  - project proposal due today... 4 vars...; resubmits by next Friday
+
+
+
+---
+name: dolphins
+class: inverse
+background-image: url(https://images.unsplash.com/photo-1611890129309-31e797820019?ixid=MXwxMjA3fDB8MHxzZWFyY2h8OXx8ZG9scGhpbnN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60)
+background-size: cover
+
+# Could getting 15 out of 16 fish have happen just by chance?  
+
+p-value - How likely is it to see as extreme or more extreme an outcome as $ \hat{p} $, if chance alone generated the outcome
+
+--
+
+
+"this would only happen 1 in 1000 based on a chance model" 
+--
+$$ p - value = 1/1000 = .001 $$ 
+
+---
+
+# p-value: How often 
+--
+(the proportion of the time) 
+--
+we would see an outcome 
+--
+as extreme 
+--
+or more extreme 
+--
+than what is observed 
+--
+if the null (chance model) is true.
+
+
+---
+
+# Notation
+
+## Null Hypothesis (Chance) $$ H_0 $$ 
+
+
+--
+
+## If evidence is strong against, 
+--
+then we can 
+--
+**reject the null** 
+--
+and accept the alternative hypothesis 
+--
+$$H_A$$
+
+
+
+
+---
+
+## Alternatively, we can use the "z score" to talk about being extreme from what would typically be observed under chance.
+
+
+
+## How far away from the chance model center?
+
+--
+
+## Measure...
+
+
+--
+
+### in fish?
+
+--
+
+### in standard deviations; z 'standardized statisic'
+
+
+
+---
+
+# Calculating the Z statistic
+
+$$ z = \frac{(observed - average of chance model)} / {standard deviation} $$
+
+
+---
+
+# General formula for Standard Deviation, used in simulation method:
+
+
+$$ SD = \sqrt\frac{\sum_{i=1}^{n}(x_i - \bar{x})^2} {n-1} $$
+
+
+---
+
+`r chunk_reveal("dolphins_plot_chance", break_type = 20, display_type = "output")`
+
+
+```{r dolphins_plot_chance, include = F}
+library(tidyverse)
+c("no fish", "fish") %>% 
+  sample(., 16, replace = T) %>% 
+  tibble(outcome = .) %>% 
+  mutate(test_num = 1:n()) %>%  
+  ggplot(.) +
+  theme_bw(base_size = 18) +
+  labs(title = "Chance Model:\nNumber of Fish (and no Fish)\nWhen Buzz and Doris Communicate 16 times") +
+  aes(x = outcome) +
+  geom_bar(color = "black",
+           fill = "lightskyblue") +
+  aes(group = test_num) +
+  scale_y_continuous(limits = c(0, 16))
+```
+
+
+---
+
+`r chunk_reveal("dolphins_plot", break_type = 2, display_type = "output")`
+
+```{r dolphins_plot, include = F}
+c("no fish", rep("fish", 15)) %>%
+  tibble(outcome = .) %>% 
+  mutate(test_num = 1:n()) %>%
+  ggplot(.) +
+  theme_bw(base_size = 18) +
+  labs(title = "Observed in Experiment:\nNumber of Fish (and no Fish)\nWhen Buzz and Doris Communicate 16 times") +
+  aes(x = outcome) +
+  geom_bar(color = "black",
+           fill = "gold2") +
+  aes(group = test_num) +
+  scale_y_continuous(limits = c(0, 16))
+```
+
+
+---
+
+`r chunk_reveal("chance_v_observed", break_type = "user", display_type = "output")`
+
+```{r chance_v_observed, include = F, out.width="90%"}
+set.seed(12446)
+# keep track of observations in a trial
+tibble(sample_id = 1:16) %>% 
+  # the number of hypothetical trials
+  crossing(trial = 1:100) %>% 
+  group_by(trial) %>% 
+  # simulating chance process
+  mutate(outcome = 
+           # like a binary outcome coin flip
+           sample(c("fish", "no fish"), 
+                  size = 16, 
+                  replace = T,
+                  prob = c(.5,.5))) %>% 
+  # count the successes number of heads by trial
+  group_by(trial) %>% 
+  summarise(num_heads = 
+              sum(outcome == "fish")) %>% 
+  ggplot() +
+  labs(title = "Number of fish won for 16 observations\nin 100 hypothetical chance model trials") +
+  theme_bw(base_size = 18) +
+  aes(x = num_heads) +
+  geom_dotplot(dotsize = .54,
+               fill = "lightskyblue") + 
+  scale_x_continuous(breaks = 0:16, limits = c(0,16)) +
+  labs(y = "number of trials with given result") + 
+  labs(x = "number of fish won in a trial") +
+  geom_vline(xintercept = 15,
+             linetype = "dashed",
+             color = "gold2",
+             size = 1.5) + #BREAK
+  ggxmean::geom_x_mean(lty = "dashed", size = 1.5) + #BREAK
+  ggxmean:::geom_x1sd(lty = "dotted", size = 1.5) + #BREAK
+  ggxmean:::geom_x2sd(lty = "dotted", size = 1.5) + #BREAK
+  ggxmean:::geom_x3sd(lty = "dotted", size = 1.5) + #BREAK
+  ggxmean:::geom_x4sd(lty = "dotted", size = 1.5) + #BREAK
+  ggxmean:::geom_x5sd(lty = "dotted", size = 1.5) #BREAK
+```
+
+---
+
+`r chunk_reveal("chance_v_observed_100000", break_type = 2, display_type = "output")`
+
+```{r chance_v_observed_100000, include = F, out.width="90%"}
+set.seed(12446)
+# keep track of observations in a trial
+tibble(sample_id = 1:16) %>% 
+  # the number of hypothetical trials
+  crossing(trial = 1:100000) %>% 
+  group_by(trial) %>% 
+  # simulating chance process
+  mutate(outcome = 
+           # like a binary outcome coin flip
+           sample(c("fish", "no fish"), 
+                  size = 16, 
+                  replace = T,
+                  prob = c(.5,.5))) %>% 
+  # count the successes number of heads by trial
+  group_by(trial) %>% 
+  summarise(num_heads = 
+              sum(outcome == "fish")) %>% 
+  ggplot() +
+  labs(title = "Number of fish won for 16 observations\nin 100,000 hypothetical chance model trials") +
+  theme_bw(base_size = 18) +
+  aes(x = num_heads) +
+  geom_dotplot(dotsize = .54,
+               fill = "lightskyblue") + 
+  scale_x_continuous(breaks = 0:16, limits = c(0,16)) +
+  labs(y = "number of trials with given result") + 
+  labs(x = "number of fish won in a trial") +
+  geom_vline(xintercept = 15,
+             linetype = "dashed",
+             color = "gold2",
+             size = 1.5) +
+  theme(axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+```
+
+
+
+---
+
+## Consistent or not consistent w/ chance model?
+
+--
+
+## Z score of 1.2?
+
+--
+
+## Z score of 3?
+
+--
+
+## Z score of -1?
+
+--
+
+## Z score of -5?
+
+
+
+
+
+---
+
+background-image: url(images_for_lecture/normal_histogram.svg)
+background-size: 550px
+background-position: 50% 80%
+
+#### Interpretation
+
+
+
+---
+class: center, inverse, middle
+
+
+
+# Can I also calculate a p-value with the z-score?
+
+--
+
+z-score seems imprecise.  I want to know: *exactly* how unlikely to observe such extreme a case just by chance
+
+
+---
+
+# Theory-based test for a single proportion 
+
+--
+
+or
+
+# 'one-proportion z-test'
+
+---
+
+# Relies on 
+
+--
+
+the Central Limit Theorem
+
+> If the sample size (n) is large enough, sampling distributions are normally distributed...  
+
+
+---
+
+> 
+
+
+---
+
+
+# The Central Limit Theorem for proportions ->
+
+> The distribution of sample proportions will be bell-shaped (normal), centered at the long-run proportion (pi), with a standard deviation of: 
+
+# $$ sd_{prop} = \sqrt\frac{\pi*(1-\pi)}{n} $$
+
+---
+
+```{r, out.width="80%"}
+knitr::include_graphics("https://thumbs.gfycat.com/QuaintTidyCockatiel-size_restricted.gif")
+```
+
+---
+
+```{r, out.heigh="50%", eval = F}
+knitr::include_graphics("images_for_lecture/galton_board.jpg")
+```
+
+
+
+
+---
+
+# Step 1 calculate sample proportion
+
+## Is the proportion of Yuks is .25?
+
+```{r, echo = T}
+13/15
+```
+
+
+---
+
+## Step 2 calc sd for the null:
+
+```{r, echo = T}
+sqrt((.25 * (1-.25)) / 15 )
+```
+
+---
+
+# Step 3 calc z stat
+
+## z stat (number of SDs away from chance model mean)
+
+```{r, echo = T}
+(0.866 - .25) / # observed minus null prop
+0.1118034
+```
+
+---
+
+# Step 4
+
+## situate in normal distribution
+
+
+```{r, echo = T}
+# pnorm gives us cumulative density function 
+# for normal distribution
+2 * (1 - pnorm(abs(5.509671)))
+
+# result is p-value 
+# the proportion of times we expect 
+# to see something as extreme or more extreme
+# than observed stat
+# just by chance!
+```
+
+---
+
+`r chunk_reveal("theory_p_val_calc", title = '## All together!', widths = c(1,1))`
+
+```{r theory_p_val_calc, include = F}
+## calculate sample proportion p hat
+13 / 15 ->
+  sample_proportion
+
+## establish pi
+.25 -> 
+  null_prob
+
+## calc sd for the null:
+sqrt((null_prob * (1-null_prob)) / 15 ) ->
+  sd_chance_model
+
+## calculate z score
+(sample_proportion - null_prob) /
+  sd_chance_model ->
+z_score
+
+# situate in normal distribution 
+(1 - pnorm(abs(z_score))) * 2 
+```
+
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+# Does this example meet the validity conditions though?
+
+--
+
+## No
+
+--
+
+## At least 10 of each case (10 'successes' 10 'failures')
+
+---
+
+# Olympics - where theory holds (10 successes, 10 failures)
+
+---
+
+`r chunk_reveal("theory_p_val_calc_box", title = '## All together boxing!', widths = c(1,1))`
+
+```{r theory_p_val_calc_box, eval = F}
+options(scipen = 10)
+
+## calculate sample proportion p hat
+248 / 457 ->
+  sample_proportion
+
+## establish pi
+.5 -> 
+  null_prob
+
+## calc sd for the null:
+sqrt((null_prob * (1-null_prob)) / 457 ) ->
+  sd_chance_model
+
+## calculate z score
+(sample_proportion - null_prob) /
+  sd_chance_model ->
+z_score
+
+# situate in normal distribution 
+(1 - pnorm(abs(z_score))) * 2
+```
+
+---
+
+```{r}
+-4:4 %>% 
+  tibble(some_zstats = .) %>% 
+  mutate(dnorm_result = dnorm(some_zstats)) %>% # density
+  mutate(pnorm_result = pnorm(some_zstats)) # cdf
+```
+
+
+---
+
+https://evamaerey.github.io/statistics/distributions#1
+
+---
+
+`r chunk_reveal("dnorm_pnorm", title = "## What's pnorm()")`
+
+```{r dnorm_pnorm, include = F}
+((-100:100)/20) %>% 
+  tibble(sd = .) %>% 
+  mutate(prob_from_normal = 
+           dnorm(sd)) %>% 
+  mutate(cummulative_from_normal = 
+           pnorm(sd)) %>% 
+  ggplot() +
+  aes(x = sd) + 
+  aes(y = prob_from_normal) + 
+  labs(title = "Probability Distribution for Normal Distribution") +
+  geom_line() +
+  aes(y = cummulative_from_normal) + 
+  labs(title = "Cumulative Distribution Function (CDF) for Normal Distribution")
+```
+
+
+
+
+
+
+
+---
+
+# Using `prop.test()` function
+
+### Is the proportion of Yuks is .25?
+
+
+```{r echo = T}
+prop.test(x = 13, # number "successes" observed 
+          n = 15, # total number
+          p = .25, # proportion expected under null
+          alternative = # which extremes count
+          "two.sided", # other options are greater and less
+          correct = F) # use classic prop test
+```
+
+---
+
+# Boxing
+
+```{r, echo = T}
+prop.test(x = 248, # number observed "successes"
+          n = 457, # total number
+          p = .5, # proportion expected under null
+          alternative = # which extremes count
+          "two.sided", # other options are greater and less
+          correct = F) # use classic prop test
+```
+
+
+
+
