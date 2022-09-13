@@ -1,0 +1,8 @@
+---
+title: "Reflection bonus opportunities"
+author: "Evangeline Reynolds"
+date: "9/13/2022"
+output: html_document
+---
+
+- [Democratizing Data Science: Using R for End-to-End Intelligence Production](rstats.ai/videos/2018-dc-r-conference/)

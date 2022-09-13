@@ -15,7 +15,7 @@ output:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache = T)
 options(scipen = 10)
 library(flipbookr)
 ```
@@ -63,10 +63,20 @@ buzz_doris_experiment
 buzz_doris_experiment %>% 
   mean() ->
 buzz_doris_observed_prop
+
+buzz_doris_experiment %>% 
+  tibble(outcome = .) %>% 
+  ggplot() + 
+  aes(x = outcome) +
+  geom_bar() + 
+  ggdirect::geom_text_count() + 
+  labs(y = "count") +
+  labs(title = "Experimental Result")
 ```
 
 
 ---
+class: center, middle, inverse
 
 # But is this statistic consistent with the chance model?
 
@@ -74,25 +84,30 @@ buzz_doris_observed_prop
 
 ## Let's look at some outcomes of individual trials under the chance model
 
+--
+
+## We use the sample() function to draw a collection of 'successes' (1) and 'failures' (2) from a probability distribution.
+
 ---
-
-
 
 `r flipbookr::chunk_reveal("individual_chance_trails", break_type = 10)`
 
 ```{r individual_chance_trails, include = FALSE}
 0:1 %>% 
-  sample(size = 16, 
+  sample(x = ., 
+         size = 16, 
          replace = T,
          prob = c(.5,.5))
 ```
----
 
-## *Many* trials tell us about probability distribution in the chance model
+---
+class: inverse, center, middle
+
+## *Many* trials tell us about *the resultant* probability distribution for multiple from the in the chance model
 
 --
 
-### Writing a function will help us manage many trials
+### Writing a function will help us manage many chance model outcomes; hypothetical outcomes under the null
 
 
 ---
@@ -137,13 +152,15 @@ set.seed(2022)
 many_trials_chance_model  
 
 many_trials_chance_model %>% 
-  slice(1:12) %>% 
+  slice(1:16) %>% 
   unnest(cols = ho) %>% 
   ggplot() + 
   aes(x = ho) + 
   facet_wrap(~ trial) + 
   geom_bar() + 
-  ggdirect::geom_text_count()
+  ggdirect::geom_text_count() + 
+  labs(title = "Examples of results under the chance model") + 
+  labs(caption = "This is sometimes called a hypothetical outcome plot,\nwhere we give 'full voice' to a bunch of the outcomes we might observe.\nUpside is that humans do well with interpretation\ndownside is you can't communicate precise probability distribution expectations")
 ```
 
 ---
@@ -158,13 +175,18 @@ ggplot(data = many_trials_chance_model) +
   geom_rug(alpha = .2) + 
   geom_bar() + 
   ggxmean::geom_x_mean() + 
+  geom_vline(xintercept = .5, 
+             color = "blue") + 
+  geom_vline(xintercept = buzz_doris_observed_prop,
+             color = "red") ->
+three_s_plot_pvalue
+
+# And thinking about z statistic
+three_s_plot_pvalue +
   ggxmean:::geom_x1sd(linetype = "dashed") + 
   ggxmean:::geom_x2sd(linetype = "dashed") + 
   ggxmean:::geom_x3sd(linetype = "dashed") + 
-  ggxmean:::geom_normal_dist(height = 600, fill = "magenta") + 
-  # situate observed in chance model trials
-  geom_vline(xintercept = buzz_doris_observed_prop,
-             color = "red") ->
+  ggxmean:::geom_normal_dist(height = 600, fill = "magenta") ->
 plot
 ```
 
@@ -177,7 +199,8 @@ many_trials_chance_model %>%
   mutate(as_or_more_extreme = prop_success >= 
            buzz_doris_observed_prop) %>% 
   pull(as_or_more_extreme) %>% 
-  mean() # mean of true and false give proportion true
+  mean() %>% # mean of true and false give proportion true
+  paste("is the pvalue") 
 
 
 many_trials_chance_model %>%
@@ -186,7 +209,8 @@ many_trials_chance_model %>%
 three_s_method_sd
 
 # z score
-(15/16 - .5)/.1249
+((15/16 - .5)/.1249) %>% 
+  paste("is the z statistic")
 
 ```
 
@@ -194,7 +218,7 @@ three_s_method_sd
 <!-- adjust font size in this css code chunk, currently 80 -->
 
 ```{css, eval = TRUE, echo = FALSE}
-.remark-code{line-height: 1.5; font-size: 120%}
+.remark-code{line-height: 1.5; font-size: 80%}
 
 @media print {
   .has-continuation {

@@ -1,0 +1,241 @@
+---
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, xaringan-themer.css]
+    seal: false
+    nature:
+      beforeInit: "https://platform.twitter.com/widgets.js"
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+
+```{r, echo = F}
+library(flipbookr)
+library(tidyverse)
+```
+
+```{r xaringan-themer, include = FALSE}
+library(xaringanthemer)
+
+xaringanthemer::mono_light(
+  # base_color = "#4c5253",
+  # header_font_google = google_font("Josefin Sans"),
+  # text_font_google   = google_font("Josefin Sans", "200", "200i"),
+  # code_font_google   = google_font("Droid Mono"),
+  text_font_size = ".8cm",
+  code_font_size = ".35cm")
+```
+
+```{r, echo = F}
+knitr::opts_chunk$set(message = F, warning = F, comment = "", fig.height = 6, echo = F)
+```
+
+
+<!-- <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Hinman_collator.jpg" width="150px"/> -->
+
+
+
+---
+
+`r chunk_reveal("gpas")`
+
+```{r gpas, include = F}
+set.seed(2022)
+rnorm(n = 6000, mean = 4, sd = .7) %>% 
+  tibble(gpa = .) %>% 
+  filter(gpa < 4.0 & gpa > 0) ->
+campus_gpas
+  
+campus_gpas %>% 
+  ggplot() + 
+  scale_x_continuous(limits = c(0,4)) + 
+  aes(x = gpa) + 
+  geom_rug(alpha = .3) + 
+  geom_histogram() + 
+  ggxmean::geom_x_mean() + 
+  ggxmean::geom_x_mean_label()
+```
+
+
+---
+
+`r chunk_reveal("gpas_sample")`
+
+```{r gpas_sample, include=F}
+set.seed(2022)
+campus_gpas %>% 
+  sample_n(size = 30) %>% 
+  ggplot() + 
+  labs(title = "A single sample of 30 observations") +
+  scale_x_continuous(limits = c(0,4)) +
+  aes(x = gpa) + 
+  geom_rug()  + 
+  geom_dotplot()  + 
+  ggxmean::geom_x_mean() + 
+  ggxmean::geom_x_mean_label()
+```
+
+
+---
+
+`r chunk_reveal("gpas_sample16")`
+
+```{r gpas_sample16, include=F}
+set.seed(1234)
+campus_gpas %>% 
+  ggplot() + 
+  ggsample::facet_sample(n_facets = 16, n_sampled = 30) +
+  labs(title = "Different hypothetical outcomes for sampling 30 observations") +
+  scale_x_continuous(limits = c(0,4)) +
+  aes(x = gpa) + 
+  geom_rug()  + 
+  geom_dotplot()  + 
+  ggxmean::geom_x_mean() + 
+  ggxmean::geom_x_mean_label(size = 3, alpha = .6)
+```
+
+---
+
+`r chunk_reveal("gpas_sample1000")`
+
+```{r gpas_sample1000,include=FALSE}
+set.seed(1243)
+campus_gpas %>% 
+  pull(gpa) %>% 
+  sample(30)
+
+sample_30_gpas <- function(x){
+  
+  campus_gpas %>% 
+  pull(gpa) %>% 
+  sample(30)
+  
+}
+
+1:1000 %>% 
+  tibble(trial = .) %>% 
+  mutate(thirty_gpas_sampled = map(trial, sample_30_gpas)) %>% 
+  mutate(sample_mean = map_dbl(thirty_gpas_sampled, mean)) %>% 
+  ggplot() + 
+  aes(x = sample_mean) + 
+  geom_rug(alpha = .2) + 
+  geom_histogram() + 
+  ggxmean::geom_x_mean() + 
+  ggxmean::geom_x_mean_label() + 
+  ggxmean:::geom_x1sd(linetype = "dashed")
+
+```
+
+
+---
+
+# Central Limit Theorem for Sample Means
+
+--
+
+## Distribution of sample means is approximately normal when the sample size is large. ( $ >=20 $)
+
+--
+
+## Sample distribution should not be strongly skewed.
+
+--
+
+## The mean for the sampling distribution of the sample mean will be equal to the population mean
+
+--
+
+## Have 
+
+$$ SD(\bar(X)) = \frac{population.standard.deviation}{\sqrt(n)} $$
+
+
+---
+
+
+```{r, echo = F}
+ma206data::chap3_GettysburgAddress %>% 
+  names() %>% 
+  str_replace_all("\\_", " ") ->
+start
+  
+ma206data::chap3_GettysburgAddress %>% 
+  pull() ->
+  end
+
+paste(start, end[1], end[2]) %>% 
+  str_split(" ") %>% 
+  .[[1]] %>% 
+  tibble(words = .) %>% 
+  mutate(words =  str_remove(words, '[[:punct:]]')) %>% 
+  mutate(length = nchar(words)) ->
+gettysburg
+
+gettysburg %>%
+  ggplot() + 
+  aes(x = length) + 
+  geom_rug(alpha = .4) + 
+  geom_bar() +
+  ggxmean::geom_x_mean() + 
+  ggxmean::geom_x_mean_label() + 
+  scale_x_continuous(breaks = 1:11) + 
+  labs(title = "Frequency of word length in Gettysburg Address")
+
+```
+
+
+
+
+---
+
+`r chunk_reveal("time_snippet_length")`
+
+```{r time_snippet_length, include = F}
+ma206data::chap2_SnippetEstimate %>% 
+  ggplot() + 
+  aes(x = estimate) +
+  geom_rug(alpha = .2) +
+  geom_dotplot() + 
+  scale_x_continuous(breaks = 1:6*5) + 
+  labs(title = "'How long do you think we played that song for you?'") + 
+  labs(subtitle = "Snippit length estimates by 48 Students. Actual length was 10 seconds") + 
+  labs(x = "Seconds guessed") + 
+  ggxmean::geom_x_mean() + 
+  geom_vline(xintercept = 10,
+             color = "red") +
+  ggxmean::geom_x_mean_label() + 
+  ggstamp::stamp_label(label = "'Are you willing to generalize the results of this study to all college students in the population?  That is, if we performed this same study on all college students, they would, on average, overestimate the acutal lenght of the snippet (10 seconds)'" %>%  str_wrap(30), 
+                       x = 22, y = .65, alpha = .8) + 
+  ggxmean:::stamp_t_dist(mean = 10, 
+                         sd = 6.49/sqrt(48), # sd for sampling distribution
+                         fill = "cadetblue",
+                         alpha = .7, height = 2
+                         ) + 
+    ggxmean:::geom_tdist(height = 12, alpha = .8,
+                       fill = "magenta") +
+    ggxmean:::geom_ttestconf(
+    size = 2, 
+    color = "magenta",
+    alpha = 1
+    ) 
+```
+
+
+---
+
+
+$$ H_0: \mu = 10 $$
+$$ H_A: \mu \ 10 $$
+
+
+
+
+
+
+
+

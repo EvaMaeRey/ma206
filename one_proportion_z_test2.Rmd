@@ -1,0 +1,136 @@
+---
+title: "Untitled"
+author: "Evangeline Reynolds"
+date: "9/12/2022"
+output: html_document
+---
+
+
+
+```{r}
+library(tidyverse)
+Pi = .3
+Complement = 1-Pi
+PiTimesComplement = Pi*(Complement)
+SqrtPiTimesComplement = sqrt(PiTimesComplement)
+OneOverSqrtNs = 1/sqrt(1:10000)
+
+library(ggstamp)
+ggcanvas() +
+    stamp_segment(yend = 0) +
+    stamp_point(size = 2, x = 1) +
+    stamp_point(size = 2) +
+    stamp_spoke(x0 = Pi, y0 = 0,
+                angle = pi,
+                radius = Pi,
+                color = "cadetblue"
+                ) +
+    stamp_spoke(x0 = Pi, y0 = 0, angle = 0,
+                radius = 1 - Pi,
+                color = "goldenrod3") +
+    stamp_point(x = Pi, y = 0, size = 3)
+```
+
+
+```{r}
+ggcanvas() +
+    stamp_segment(yend = 0) +
+    stamp_point(size = 2, x = 1) +
+    stamp_point(size = 2) +
+    stamp_spoke(x0 = Pi, y0 = 0,
+                angle = seq(from = pi, to = .5*pi, by = -pi/20),
+                radius = Pi,
+                alpha = 1:11*1/11,
+                color = "cadetblue"
+    ) +
+    stamp_spoke(x0 = Pi, y0 = 0, angle = 0,
+                radius = 1 - Pi,
+                color = "goldenrod3") +
+    stamp_point(x = Pi, y = 0, size = 3)
+```
+
+```{r}
+ggcanvas() +
+    stamp_segment(yend = 0) +
+    stamp_point(size = 2, x = 1) +
+    stamp_point(size = 2) +
+    stamp_spoke(x0 = Pi, y0 = 0,
+                angle = seq(from = pi, to = .5*pi, by = -pi/20),
+                radius = Pi,
+                alpha = 1:11*1/11,
+                color = "cadetblue"
+    ) +
+    stamp_spoke(x0 = Pi, y0 = 0, angle = 0,
+                radius = 1 - Pi,
+                color = "goldenrod3") +
+    stamp_point(x = Pi, y = 0, size = 3) +
+    stamp_rect(xmin = Pi, ymin = 0,
+               xmax = 1, ymax = Pi,
+               color = "cadetblue",
+               fill = "cadetblue",
+               alpha = .3)
+
+
+ggcanvas() +
+    stamp_segment(yend = 0) +
+    stamp_point(size = 2, x = 1) +
+    stamp_point(size = 2) +
+    stamp_spoke(x0 = Pi, y0 = 0,
+                angle = seq(from = pi, to = .5*pi, by = -pi/20),
+                radius = Pi,
+                alpha = 1:11*1/11,
+                color = "cadetblue"
+    ) +
+    stamp_spoke(x0 = Pi, y0 = 0, angle = 0,
+                radius = 1 - Pi,
+                color = "goldenrod3") +
+    stamp_point(x = Pi, y = 0, size = 3) +
+    stamp_rect(xmin = Pi, ymin = 0,
+               xmax = 1, ymax = Pi,
+               color = "cadetblue",
+               fill = "cadetblue",
+               alpha = .05)  +
+    stamp_rect(xmin = Pi + sqrt(Pi * (1-Pi)), ymin = 0,
+               xmax = Pi, ymax = sqrt(Pi * (1-Pi)),
+               color = "cadetblue",
+               fill = "cadetblue",
+               alpha = .3)
+```
+
+
+```{r}
+last_plot() + 
+    stamp_segment(x = Pi + sqrt(Pi * (1-Pi)), 
+                  y = 0, xend = Pi,
+                  yend = 0, size = 5,
+                  color = "cadetblue")
+```
+
+
+```{r}
+last_plot() +
+    ggxmean::stamp_normal_dist(mean = Pi, sd = SqrtPiTimesComplement)
+```
+
+```{r}
+last_plot() +
+    scale_x_continuous(limits = c(-.25, 1.25))
+```
+
+```{r}
+last_plot() + 
+    stamp_point(x = Pi + OneOverSqrtNs*SqrtPiTimesComplement,
+                size = 1)
+```
+
+```{r}
+last_plot() + 
+    ggxmean::stamp_normal_dist(mean = Pi, 
+                               sd = SqrtPiTimesComplement * 
+                                   1/sqrt(30),
+                               height = 4) + 
+    ggxmean::stamp_normal_dist(mean = Pi, 
+                               sd = SqrtPiTimesComplement * 
+                                   1/sqrt(20),
+                               height = 2)
+```
