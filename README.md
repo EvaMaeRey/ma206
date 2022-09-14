@@ -10,6 +10,7 @@
 ma206 hold slides and more for our class.
 
   - [bonus\_reflection.html](https://evamaerey.github.io/ma206/bonus_reflection.html)
+  - [bonus\_visualization.html](https://evamaerey.github.io/ma206/bonus_visualization.html)
   - [lesson\_01\_data\_stories.html](https://evamaerey.github.io/ma206/lesson_01_data_stories.html)
   - [lesson\_02\_more\_data\_stories.html](https://evamaerey.github.io/ma206/lesson_02_more_data_stories.html)
   - [lesson\_03\_data\_wrangling\_simulation.html](https://evamaerey.github.io/ma206/lesson_03_data_wrangling_simulation.html)

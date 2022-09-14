@@ -5,4 +5,17 @@ date: "9/13/2022"
 output: html_document
 ---
 
-- [Democratizing Data Science: Using R for End-to-End Intelligence Production](rstats.ai/videos/2018-dc-r-conference/)
+The "React Bonus Opportunity" allows you to earn up to ten additional bonus points based on recommended materials by the instructor; 5 points for each material reviewed. To earn these first review the material (video/article/etc).  Then write a very short summary of the material about 280 characters (tweet length - concise!); and something you learned from the material (also tweet length).
+
+
+- ["Glamour of Graphics", Will Chase Talk](https://www.youtube.com/watch?v=h5cTacaWE6I)	
+- ["Perception: Theory, Experimentation, and Application to the Development of Graphical Methods" McGill and Cleveland 1984	paper](https://www.jstor.org/stable/2288400#metadata_info_tab_contents	academic article)
+- [Graphical Perception video discussion](https://www.youtube.com/watch?v=edAf1jx1wh8	video)
+- [Third wave data visualization (how grammar of graphics framework fits into data viz 'waves')](https://www.youtube.com/watch?v=itChfcTx7ao)
+- ["There is only one test" Allen Downey blogpost](	http://allendowney.blogspot.com/2016/06/there-is-still-only-one-test.html)
+
+- [There's a stat for that (Bruce Frey)](https://www.amazon.com/There%E2%80%B2s-Stat-That-What-When/dp/1483318753)	
+
+- [Democratizing Data Science: Using R for End-to-End Intelligence Production, Powell](https://www.youtube.com/watch?v=NTb1w61_Bwc&feature=youtu.be)
+
+- [R in USMA](https://www.youtube.com/watch?v=Npk-cfQVqKo&feature=youtu.be)

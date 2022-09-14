@@ -1,0 +1,49 @@
+---
+title: "visualization bonus"
+author: "Evangeline Reynolds"
+date: "9/13/2022"
+output: html_document
+---
+
+
+The "Viz" Bonus opportunity allows you to earn up to an additional 10 points in this course.  Create up to 5 data visualizations from the ma206data package to earn up to 2 points a piece.  Charts should be of different types (recommended:, geom_point(), geom_bar(), geom_dotplot(), geom_histogram(), etc) .   Consult you book for information about the dataset you choose and use appropriate labels so that an audience can easily understand the variables and question the data addresses.  Create all in a single .Rmd script (details to follow) and submit the html output to your instructor before the TEE
+
+
+How to get ma206data package:
+
+* in console ->	`install.package("remotes")`
+* in console ->	`remotes::install_github("EvaMaeRey/ma206data")`
+
+
+# Example 1
+
+```{r, message = F, warning=F}
+library(tidyverse)
+library(ma206data)
+# Example of two plots in script; your plots should have labs(title = ?) clarifying chart contents ->	
+head(ma206data::chap5_Smoking) # preview a few rows of raw data
+
+ggplot(data = ma206data::chap5_Smoking) +
+  aes(x = parents) +
+  geom_bar() +
+  aes(fill = child)
+
+ggplot(data = ma206data::chap5_Smoking) +
+  aes(x = parents) +
+  geom_bar(position = "fill") +
+  aes(fill = child)
+```
+
+# Example 2
+
+```{r, message = F, warning=F}
+library(tidyverse)
+library(ma206data)
+# Example of two plots in script; your plots should have labs(title = ?) clarifying chart contents ->	
+head(ma206data::chap10_HeightHaircut) # preview a few rows of raw data
+
+ggplot(data = ma206data::chap10_HeightHaircut) +
+  aes(x = height, y = haircut) +
+  geom_point(alpha = .4)
+```
+
