@@ -289,7 +289,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-* scale_x_continuous(limits = c(0,10))
+* scale_x_continuous(limits = c(0,10),
+*                    breaks = 0:10)
 ```
 ]
  
@@ -306,7 +307,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
 * aes(x = hours)
 ```
 ]
@@ -324,7 +326,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
 * geom_rug()
 ```
@@ -343,7 +346,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
   geom_rug() +
 * geom_dotplot(dotsize = .8)
@@ -363,7 +367,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
   geom_rug() +
   geom_dotplot(dotsize = .8) +
@@ -384,7 +389,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
   geom_rug() +
   geom_dotplot(dotsize = .8) +
@@ -407,7 +413,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
   geom_rug() +
   geom_dotplot(dotsize = .8) +
@@ -431,7 +438,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
   geom_rug() +
   geom_dotplot(dotsize = .8) +
@@ -456,7 +464,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
   geom_rug() +
   geom_dotplot(dotsize = .8) +
@@ -486,7 +495,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
   geom_rug() +
   geom_dotplot(dotsize = .8) +
@@ -518,7 +528,8 @@ count: false
 ```r
 sleep %&gt;%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
   geom_rug() +
   geom_dotplot(dotsize = .8) +

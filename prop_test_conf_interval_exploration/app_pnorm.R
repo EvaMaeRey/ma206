@@ -54,8 +54,9 @@ ggxmean:::stamp_space() +
         stamp_normal_dist(alpha = .1) + #
         stamp_normal_dist(sd_max = input$z,
                                    alpha = .8,
-                                   fill = 'magenta') +
-ggstamp::stamp_text(x = input$z, y = .1, label = paste0('Z = ', input$z)) +
+                                   fill = 'plum4') +
+geom_vline(xintercept = input$z, color = 'plum4') +
+ggstamp::stamp_label(x = input$z, y = .1, label = paste0('Z = ', input$z)) +
 ggstamp::stamp_label(x = 3, y = .32, size = 7,
 label = paste0('pnorm(z) = ',
 pnorm(input$z) %>% round(3)))" ->

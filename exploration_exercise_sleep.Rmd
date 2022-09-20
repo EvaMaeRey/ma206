@@ -81,7 +81,8 @@ sleep %>%
 ```{r plot, include = F}
 sleep %>%
   ggplot() +
-  scale_x_continuous(limits = c(0,10)) +
+  scale_x_continuous(limits = c(0,10),
+                     breaks = 0:10) +
   aes(x = hours) +
   geom_rug() +
   geom_dotplot(dotsize = .8) +

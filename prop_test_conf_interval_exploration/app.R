@@ -22,7 +22,7 @@ ui <- fluidPage(
     sidebarLayout(
         sidebarPanel(
             sliderInput("pi",
-                        "Size of PI:",
+                        "Size of PI, hypothesized value:",
                         min = 0,
                         max = 1,
                         value = .3333),
@@ -31,9 +31,9 @@ ui <- fluidPage(
                         min = 20,
                         max = 200,
                         value = 20),
-            shiny::textInput("phat",
-                        "p-hat:",
-                        value = .3333)
+            shiny::numericInput("phat",
+                        "p-hat, observed proportion:",
+                        value = .432)
 
         ),
 
@@ -67,12 +67,16 @@ stamp_dist_null_pi_n <- function(pi, n, height){
 }
 
 "        ggstamp::ggcanvas() +
-            ggstamp::stamp_point(x = input$pi, y = 0) +
+            scale_x_continuous(limits = 0:1) + # logical limits
+            geom_vline(xintercept = c(0,1), linetype = 'dotted') +
+            ggstamp::stamp_point(x = input$pi, y = 0, size = 2) +
             geom_vline(xintercept = input$pi, linetype = 'dashed') +
             coord_cartesian() +
-            geom_vline(xintercept = 1/3) +
-            scale_x_continuous(limits = 0:1) +
-            stamp_dist_null_pi_n(pi = input$pi, n = input$n)" ->
+            geom_vline(xintercept = input$phat) +
+            ggstamp::stamp_label(y = .4, x = input$phat, label = 'p-hat', parse = T) +
+            stamp_normal_dist(sd = sqrt(input$pi*(1-input$pi)/input$n),
+                              mean = input$pi) +
+            ggstamp::stamp_label(y = .03, x = input$pi, label = 'PI', parse = T)" ->
     for_shiny
 
 
