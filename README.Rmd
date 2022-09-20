@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 <!-- badges: end -->
-
+    
  
 ma206 hold slides and more for our class.  
 

@@ -1,0 +1,107 @@
+---
+title: "sleepy students?"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    seal: false
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      seal: false
+---
+
+
+class: inverse, left
+background-image: url(https://images.unsplash.com/photo-1548610325-af59423f54bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1393&q=80)
+background-size: cover
+# .Large[Sleepy Students?]
+#### .tiny[Dr. Evangeline Reynolds | 2022-09-19 |Image credit: No Revisions, Upsplash]
+???
+
+
+```{r, include = F}
+# This is the recommended set up for flipbooks
+# you might think about setting cache to TRUE as you gain practice --- building flipbooks from scratch can be time consuming
+knitr::opts_chunk$set(fig.width = 7, message = FALSE, warning = FALSE, comment = "", cache = F, fig.height = 4)
+library(flipbookr)
+library(tidyverse)
+```
+
+
+
+<!-- adjust font size in this css code chunk, currently 80 -->
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 80%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+```
+
+---
+
+`r chunk_reveal("mysetup")`
+
+```{r mysetup, include=F}
+library(tidyverse)
+url <- "https://raw.githubusercontent.com/rslasater82/MA206Datasets/main/sleep.csv"
+
+read_csv(file = url) ->
+  sleep
+
+sleep %>%
+  summarize(xbar = mean(hours),
+            s = sd(hours),
+            n = n())
+```
+
+
+---
+
+`r chunk_reveal("plot")`
+
+```{r plot, include = F}
+sleep %>%
+  ggplot() +
+  scale_x_continuous(limits = c(0,10)) +
+  aes(x = hours) +
+  geom_rug() +
+  geom_dotplot(dotsize = .8) +
+  ggxmean::geom_x_mean() +
+  geom_vline(xintercept = 8,
+             linetype = "dashed") +
+  ggxmean::geom_normal_dist(fill = "magenta") +
+  ggxmean::geom_normal_dist_zlines(color = "magenta") +
+  ggxmean::stamp_t_dist(sd = .89/sqrt(51),
+                        df = 51-1,
+                        mean = 8,
+                        alpha = .7,
+                        fill = "goldenrod") +
+  ggxmean:::geom_tdist(fill = "cadetblue",
+                       alpha = .8) +
+  ggxmean:::geom_ttestconf(color = "darkred", 
+                           size = 3,
+                           alpha = 1)
+```
+
+
+
+
