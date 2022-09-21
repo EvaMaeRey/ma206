@@ -25,4 +25,5 @@ ma206 hold slides and more for our class.
   - [one\_proportion\_z\_test2.html](https://evamaerey.github.io/ma206/one_proportion_z_test2.html)
   - [project\_dataset\_ideas.html](https://evamaerey.github.io/ma206/project_dataset_ideas.html)
   - [project\_lahman\_baseball\_example.html](https://evamaerey.github.io/ma206/project_lahman_baseball_example.html)
+  - [statistical\_investigations\_lab.html](https://evamaerey.github.io/ma206/statistical_investigations_lab.html)
   - [three\_s\_approach\_with\_r.html](https://evamaerey.github.io/ma206/three_s_approach_with_r.html)

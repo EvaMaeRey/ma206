@@ -1,0 +1,84 @@
+---
+title: "Statistical Investigations Lab (SIL)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r, include = F}
+# This is the recommended set up for flipbooks
+# you might think about setting cache to TRUE as you gain practice --- building flipbooks from scratch can be time consuming
+knitr::opts_chunk$set(fig.width = 6, message = FALSE, warning = FALSE, comment = "", cache = F)
+library(flipbookr)
+```
+
+
+`r chunk_reveal("my_cars")`
+
+
+```{r my_cars, include = FALSE}
+library(tidyverse)
+library(janitor)
+
+url <- "https://raw.githubusercontent.com/acammack1234/ma206/main/commander_community_ties.csv"
+
+read_csv(file = url, 
+         guess_max = 10000) %>% 
+  clean_names() %>% 
+  drop_na(postwarinfluence_index2, 
+          fn_governance_index2, 
+          commanderlocal_dummy) %>% 
+  select(department,
+         name,
+         postwarinfluence_index2,
+         fn_governance_index2,
+         commanderlocal_dummy,
+         fn_organizedmeetings_dummy,
+         postwarinfluence_index2,
+         ethnicity_northern) ->
+df
+```
+
+---
+
+
+# preview
+
+```{r}
+df %>% skimr::skim()
+```
+
+
+
+<!-- adjust font size in this css code chunk, currently 80 -->
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 60%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+```
+
+

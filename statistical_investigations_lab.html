@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Statistical Investigations Lab (SIL)</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Statistical Investigations Lab (SIL)
+
+---
+
+
+
+
+
+
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+*library(tidyverse)
+```
+]
+ 
+.panel2-my_cars-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+library(tidyverse)
+*library(janitor)
+```
+]
+ 
+.panel2-my_cars-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+library(tidyverse)
+library(janitor)
+
+*url &lt;- "https://raw.githubusercontent.com/acammack1234/ma206/main/commander_community_ties.csv"
+```
+]
+ 
+.panel2-my_cars-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+library(tidyverse)
+library(janitor)
+
+url &lt;- "https://raw.githubusercontent.com/acammack1234/ma206/main/commander_community_ties.csv"
+
+*read_csv(file = url,
+*        guess_max = 10000)
+```
+]
+ 
+.panel2-my_cars-auto[
+
+```
+# A tibble: 95 × 137
+   DEPARTMENT NAME          POPULATION LEG2011ID LEG2011TUR RDRLEG2011 PDCILEG11
+   &lt;chr&gt;      &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+ 1 Danané     "Danan\xe9"       104672       193       45.4       26.2      3.97
+ 2 Man        "Podiagouin\…      21694       196       41.5       14.2     10.8 
+ 3 Danané     "Mahapleu"         44368       194       39.8       11.5     NA   
+ 4 Vavoua     "K\xe9tro-Ba…      24934       105       34.1       51.2     45.6 
+ 5 Vavoua     "Vavoua"          134651       105       34.1       51.2     45.6 
+ 6 Man        "Fagnampleu"        2967       196       41.5       14.2     10.8 
+ 7 Facobly    "Facobly"          22407        91        0          0        0   
+ 8 Man        "Man"             188704       197       51.1       53        3.18
+ 9 Botro      "Botro"            20337        58       64.2       NA       11.2 
+10 Séguéla    "S\xe9gu\xe9…      63774       203       45.3       93.7      6.27
+# … with 85 more rows, and 130 more variables: LEG2011WIN &lt;chr&gt;,
+#   N2011WINPC &lt;dbl&gt;, MUN2013ID &lt;dbl&gt;, MUN2013TUR &lt;dbl&gt;, RDRMUN2013 &lt;dbl&gt;,
+#   PDCIMUN13 &lt;dbl&gt;, MUN2013WIN &lt;chr&gt;, N2013WINPC &lt;dbl&gt;,
+#   Ouattara2010votes &lt;dbl&gt;, total2010votes &lt;dbl&gt;, Ouattara2010vs &lt;dbl&gt;,
+#   Primary.Ethnicity &lt;chr&gt;, Mining.EconActivity &lt;chr&gt;, PavedRoad.Access &lt;dbl&gt;,
+#   Prefecture &lt;chr&gt;, Mairie &lt;chr&gt;, Gendarmerie.Police.Poste &lt;chr&gt;,
+#   HealthClinic &lt;chr&gt;, Secondary.School &lt;chr&gt;, Bank &lt;chr&gt;, …
+```
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+library(tidyverse)
+library(janitor)
+
+url &lt;- "https://raw.githubusercontent.com/acammack1234/ma206/main/commander_community_ties.csv"
+
+read_csv(file = url,
+         guess_max = 10000) %&gt;%
+* clean_names()
+```
+]
+ 
+.panel2-my_cars-auto[
+
+```
+# A tibble: 95 × 137
+   department name          population leg2011id leg2011tur rdrleg2011 pdcileg11
+   &lt;chr&gt;      &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+ 1 Danané     "Danan\xe9"       104672       193       45.4       26.2      3.97
+ 2 Man        "Podiagouin\…      21694       196       41.5       14.2     10.8 
+ 3 Danané     "Mahapleu"         44368       194       39.8       11.5     NA   
+ 4 Vavoua     "K\xe9tro-Ba…      24934       105       34.1       51.2     45.6 
+ 5 Vavoua     "Vavoua"          134651       105       34.1       51.2     45.6 
+ 6 Man        "Fagnampleu"        2967       196       41.5       14.2     10.8 
+ 7 Facobly    "Facobly"          22407        91        0          0        0   
+ 8 Man        "Man"             188704       197       51.1       53        3.18
+ 9 Botro      "Botro"            20337        58       64.2       NA       11.2 
+10 Séguéla    "S\xe9gu\xe9…      63774       203       45.3       93.7      6.27
+# … with 85 more rows, and 130 more variables: leg2011win &lt;chr&gt;,
+#   n2011winpc &lt;dbl&gt;, mun2013id &lt;dbl&gt;, mun2013tur &lt;dbl&gt;, rdrmun2013 &lt;dbl&gt;,
+#   pdcimun13 &lt;dbl&gt;, mun2013win &lt;chr&gt;, n2013winpc &lt;dbl&gt;,
+#   ouattara2010votes &lt;dbl&gt;, total2010votes &lt;dbl&gt;, ouattara2010vs &lt;dbl&gt;,
+#   primary_ethnicity &lt;chr&gt;, mining_econ_activity &lt;chr&gt;,
+#   paved_road_access &lt;dbl&gt;, prefecture &lt;chr&gt;, mairie &lt;chr&gt;,
+#   gendarmerie_police_poste &lt;chr&gt;, health_clinic &lt;chr&gt;, …
+```
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+library(tidyverse)
+library(janitor)
+
+url &lt;- "https://raw.githubusercontent.com/acammack1234/ma206/main/commander_community_ties.csv"
+
+read_csv(file = url,
+         guess_max = 10000) %&gt;%
+  clean_names() %&gt;%
+* drop_na(postwarinfluence_index2,
+*         fn_governance_index2,
+*         commanderlocal_dummy)
+```
+]
+ 
+.panel2-my_cars-auto[
+
+```
+# A tibble: 93 × 137
+   department name          population leg2011id leg2011tur rdrleg2011 pdcileg11
+   &lt;chr&gt;      &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+ 1 Danané     "Danan\xe9"       104672       193       45.4       26.2      3.97
+ 2 Man        "Podiagouin\…      21694       196       41.5       14.2     10.8 
+ 3 Danané     "Mahapleu"         44368       194       39.8       11.5     NA   
+ 4 Vavoua     "K\xe9tro-Ba…      24934       105       34.1       51.2     45.6 
+ 5 Vavoua     "Vavoua"          134651       105       34.1       51.2     45.6 
+ 6 Man        "Fagnampleu"        2967       196       41.5       14.2     10.8 
+ 7 Facobly    "Facobly"          22407        91        0          0        0   
+ 8 Man        "Man"             188704       197       51.1       53        3.18
+ 9 Botro      "Botro"            20337        58       64.2       NA       11.2 
+10 Séguéla    "S\xe9gu\xe9…      63774       203       45.3       93.7      6.27
+# … with 83 more rows, and 130 more variables: leg2011win &lt;chr&gt;,
+#   n2011winpc &lt;dbl&gt;, mun2013id &lt;dbl&gt;, mun2013tur &lt;dbl&gt;, rdrmun2013 &lt;dbl&gt;,
+#   pdcimun13 &lt;dbl&gt;, mun2013win &lt;chr&gt;, n2013winpc &lt;dbl&gt;,
+#   ouattara2010votes &lt;dbl&gt;, total2010votes &lt;dbl&gt;, ouattara2010vs &lt;dbl&gt;,
+#   primary_ethnicity &lt;chr&gt;, mining_econ_activity &lt;chr&gt;,
+#   paved_road_access &lt;dbl&gt;, prefecture &lt;chr&gt;, mairie &lt;chr&gt;,
+#   gendarmerie_police_poste &lt;chr&gt;, health_clinic &lt;chr&gt;, …
+```
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+library(tidyverse)
+library(janitor)
+
+url &lt;- "https://raw.githubusercontent.com/acammack1234/ma206/main/commander_community_ties.csv"
+
+read_csv(file = url,
+         guess_max = 10000) %&gt;%
+  clean_names() %&gt;%
+  drop_na(postwarinfluence_index2,
+          fn_governance_index2,
+          commanderlocal_dummy) %&gt;%
+* select(department,
+*        name,
+*        postwarinfluence_index2,
+*        fn_governance_index2,
+*        commanderlocal_dummy,
+*        fn_organizedmeetings_dummy,
+*        postwarinfluence_index2,
+*        ethnicity_northern)
+```
+]
+ 
+.panel2-my_cars-auto[
+
+```
+# A tibble: 93 × 7
+   department name            postwarinfluenc… fn_governance_i… commanderlocal_…
+   &lt;chr&gt;      &lt;chr&gt;                      &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+ 1 Danané     "Danan\xe9"                    4                2                0
+ 2 Man        "Podiagouin\xe…                0                2                0
+ 3 Danané     "Mahapleu"                     2                2                0
+ 4 Vavoua     "K\xe9tro-Bass…                1                2                0
+ 5 Vavoua     "Vavoua"                       4                5                0
+ 6 Man        "Fagnampleu"                   0                2                0
+ 7 Facobly    "Facobly"                      2                2                1
+ 8 Man        "Man"                          4                6                0
+ 9 Botro      "Botro"                        1                4                0
+10 Séguéla    "S\xe9gu\xe9la"                4                4                0
+# … with 83 more rows, and 2 more variables: fn_organizedmeetings_dummy &lt;dbl&gt;,
+#   ethnicity_northern &lt;dbl&gt;
+```
+]
+
+---
+count: false
+ 
+
+.panel1-my_cars-auto[
+
+```r
+library(tidyverse)
+library(janitor)
+
+url &lt;- "https://raw.githubusercontent.com/acammack1234/ma206/main/commander_community_ties.csv"
+
+read_csv(file = url,
+         guess_max = 10000) %&gt;%
+  clean_names() %&gt;%
+  drop_na(postwarinfluence_index2,
+          fn_governance_index2,
+          commanderlocal_dummy) %&gt;%
+  select(department,
+         name,
+         postwarinfluence_index2,
+         fn_governance_index2,
+         commanderlocal_dummy,
+         fn_organizedmeetings_dummy,
+         postwarinfluence_index2,
+         ethnicity_northern) -&gt;
+*df
+```
+]
+ 
+.panel2-my_cars-auto[
+
+]
+
+&lt;style&gt;
+.panel1-my_cars-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-my_cars-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-my_cars-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+---
+
+
+# preview
+
+
+```r
+df %&gt;% skimr::skim()
+```
+
+```
+Skim summary statistics
+ n obs: 93 
+ n variables: 7 
+ group variables:  
+
+── Variable type:character ─────────────────────────────────────────────────────
+   variable missing complete  n min max empty n_unique
+ department       0       93 93   3  15     0       32
+       name       0       93 93   3  26     0       93
+
+── Variable type:numeric ───────────────────────────────────────────────────────
+                   variable missing complete  n mean   sd p0 p25 p50 p75 p100
+       commanderlocal_dummy       0       93 93 0.12 0.32  0   0   0   0    1
+         ethnicity_northern       0       93 93 0.58 0.5   0   0   1   1    1
+       fn_governance_index2       0       93 93 2.23 1.23  0   2   2   3    6
+ fn_organizedmeetings_dummy       0       93 93 0.59 0.49  0   0   1   1    1
+    postwarinfluence_index2       0       93 93 1.57 1.35  0   0   1   3    4
+     hist
+ ▇▁▁▁▁▁▁▁
+ ▆▁▁▁▁▁▁▇
+ ▂▂▇▃▁▂▁▁
+ ▆▁▁▁▁▁▁▇
+ ▇▆▁▆▁▅▁▃
+```
+
+
+
+&lt;!-- adjust font size in this css code chunk, currently 80 --&gt;
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 60%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+&lt;/style&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
