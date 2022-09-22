@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Worked examples</title>
+    <meta charset="utf-8" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/hygge.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Worked examples
+## One proportion z test, and One sample t test
+
+---
+
+
+
+
+class: inverse, center, middle
+
+# Part I: Proportions
+
+--
+
+## This part is about when there are two outcomes.
+
+
+---
+
+## Consider the observed data for survivorship data of female passengers on the Titanic:
+
+--
+
+
+
+
+
+
+
+
+--
+
+## Does this outcome differ from an underlying process where probability of surviving is 50/50 (proportion = .5)?
+
+
+---
+class: inverse, center, middle
+
+# Step 1: Collecting the basic facts of the question
+
+
+---
+
+## What is the name of the theory-based test we should use?
+
+--
+
+*One proportion Z Test*
+
+--
+
+## What are our Hypotheses?
+
+--
+
+ $$ H_0: \Pi = .5 $$
+
+--
+
+### Which implies
+
+ $$ H_A: \Pi \neq  .5 $$  
+--
+
+### but we know other inequalites (&gt;, &lt;) are possible;
+--
+reread question to verify you got the right one
+--
+ 
+
+---
+
+
+---
+
+# Now let's also summarize the basic facts of this case in code and save objects in the R environment (n, phat, and pi)
+
+
+---
+
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries-auto[
+
+```r
+# sample size
+*126 + 344
+```
+]
+ 
+.panel2-preliminaries-auto[
+
+```
+## [1] 470
+```
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries-auto[
+
+```r
+# sample size
+126 + 344 -&gt;
+* n
+```
+]
+ 
+.panel2-preliminaries-auto[
+
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries-auto[
+
+```r
+# sample size
+126 + 344 -&gt;
+  n
+
+# observed proportion
+*344/n
+```
+]
+ 
+.panel2-preliminaries-auto[
+
+```
+## [1] 0.7319149
+```
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries-auto[
+
+```r
+# sample size
+126 + 344 -&gt;
+  n
+
+# observed proportion
+344/n -&gt;
+* phat
+```
+]
+ 
+.panel2-preliminaries-auto[
+
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries-auto[
+
+```r
+# sample size
+126 + 344 -&gt;
+  n
+
+# observed proportion
+344/n -&gt;
+  phat
+
+# proposed parameter
+*.5
+```
+]
+ 
+.panel2-preliminaries-auto[
+
+```
+## [1] 0.5
+```
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries-auto[
+
+```r
+# sample size
+126 + 344 -&gt;
+  n
+
+# observed proportion
+344/n -&gt;
+  phat
+
+# proposed parameter
+.5 -&gt;
+* Pi
+```
+]
+ 
+.panel2-preliminaries-auto[
+
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries-auto[
+
+```r
+# sample size
+126 + 344 -&gt;
+  n
+
+# observed proportion
+344/n -&gt;
+  phat
+
+# proposed parameter
+.5 -&gt;
+  Pi
+```
+]
+ 
+.panel2-preliminaries-auto[
+
+]
+
+&lt;style&gt;
+.panel1-preliminaries-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-preliminaries-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-preliminaries-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+class: inverse, center, middle
+
+# Step 2. How far am I into the tails of the null distribution?
+--
+Calculating the standardized statistic
+--
+(Z in this case)
+
+
+
+
+---
+
+### Okay. Let's look at *calculating* the test statistic: Z
+
+--
+
+### (i.e. how far in the null distribution are we out in standard deviations?)
+
+--
+
+##  $$ Z = \frac{\hat{p}-\Pi}{SD_{null}}$$
+--
+where
+
+## $$ SD_{null} = \sqrt{\frac{\Pi*(1-\Pi)}{n}}$$
+
+
+
+
+
+
+
+---
+
+count: false
+ 
+
+.panel1-standardized-auto[
+
+```r
+# lets just compute the numerator
+*phat - Pi
+```
+]
+ 
+.panel2-standardized-auto[
+
+```
+## [1] 0.2319149
+```
+]
+
+---
+count: false
+ 
+
+.panel1-standardized-auto[
+
+```r
+# lets just compute the numerator
+phat - Pi -&gt;
+* z_numerator
+```
+]
+ 
+.panel2-standardized-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-standardized-auto[
+
+```r
+# lets just compute the numerator
+phat - Pi -&gt;
+  z_numerator
+
+# and now the denominator
+*sqrt(Pi*(1-Pi)/n)
+```
+]
+ 
+.panel2-standardized-auto[
+
+```
+## [1] 0.02306328
+```
+]
+
+---
+count: false
+ 
+
+.panel1-standardized-auto[
+
+```r
+# lets just compute the numerator
+phat - Pi -&gt;
+  z_numerator
+
+# and now the denominator
+sqrt(Pi*(1-Pi)/n) -&gt;
+* sd_null
+```
+]
+ 
+.panel2-standardized-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-standardized-auto[
+
+```r
+# lets just compute the numerator
+phat - Pi -&gt;
+  z_numerator
+
+# and now the denominator
+sqrt(Pi*(1-Pi)/n) -&gt;
+  sd_null
+
+# and combining
+*z_numerator/sd_null
+```
+]
+ 
+.panel2-standardized-auto[
+
+```
+## [1] 10.05559
+```
+]
+
+---
+count: false
+ 
+
+.panel1-standardized-auto[
+
+```r
+# lets just compute the numerator
+phat - Pi -&gt;
+  z_numerator
+
+# and now the denominator
+sqrt(Pi*(1-Pi)/n) -&gt;
+  sd_null
+
+# and combining
+z_numerator/sd_null -&gt;
+* z
+```
+]
+ 
+.panel2-standardized-auto[
+
+]
+
+&lt;style&gt;
+.panel1-standardized-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-standardized-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-standardized-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+---
+
+So what I'm picturing is...
+
+--
+
+![](worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+--
+
+So I'm way out in the tail of that null distribution.
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Step 3: Express this extremeness as a p-value.
+--
+
+### In other words, how likely am I to observe something as extreme or more extreme than my statistic (phat in this case), if the null is true;
+--
+p-value expresses this as a proportion (logical max 1 - totally consistent w/ null; logical min 0 -- totally inconsistent with null);  
+--
+The smaller the p-value, the more inconsistent w/ the null.
+
+
+---
+
+### Calculating the p-value depends on Z and which inequality I used in my hypotheses set up.  
+--
+I know I'll use the function pnorm(),
+--
+and choose from the code based on my alternative hypothesis:
+
+--
+
+|Alternative Hypothesis|R Code|
+|:--------------------:|------|
+|$$ &gt; $$|`1-pnorm(z)`|
+|$$ &lt; $$|`pnorm(z)`|
+|$$ \neq$$|`2*(1-pnorm(abs(z)))`|
+
+
+---
+
+## I'll use the two-tailed test; after double checking the question wording: "Does this outcome *differ...*".
+
+--
+
+## So...
+
+
+```r
+2*(1-pnorm(abs(z)))
+```
+
+```
+## [1] 0
+```
+
+--
+
+### The p-value output is computationally zero!  
+
+--
+
+### So my observed value p-hat, 0.73, is quite inconsistent with the null.
+
+--
+
+### There is very strong evidence against the null hypothesis.
+
+
+
+---
+class: inverse, center, middle
+
+# Step 4. What are plausible values of the parameter?
+
+
+--
+### The confidence interval?
+--
+what are values that are consistent with the observed statistic?
+--
+
+
+---
+
+### I want to look at the interval centered around p-hat, that will contain $ \Pi $ 95% (or sometimes 90% or 99%) of the time in repeated samples.
+
+--
+
+### So I'm picturing a normal distribution centered at phat, and an interval under that, which when integrated encompasses 95% of the area...
+
+![](worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+## The confidence interval is:
+
+# $$ phat \pm M*SE   $$
+--
+
+### where:
+
+### M, the multiplier, is determined by the significance level that's desired; 95, 99 or 90 are common.
+
+--
+### and where:
+
+$$ SE = \sqrt{\frac{\hat{p}*(1-\hat{p})}{n}} $$
+
+
+---
+
+
+## So, I look up the *R code* needed for M in this table.
+--
+
+
+|**Confidence Level**|**Multiplier (Categorical)**|**Multiplier (Quantitative)**|
+|-------------------|-----------------------|-------------------------|
+|90%|qnorm(.95)| qt(.95,n-1) or qt(.95,n-2)|
+|95%|qnorm(.975)|qt(.975,n-1) or qt(.975,n-2)|
+|99%|qnorm(.995)|qt(.995,n-1) or qt(.995,n-2)|
+
+--
+
+### and compute the lower bound
+
+
+
+```r
+phat - qnorm(.975)*sqrt(phat*(1-phat)/n)
+```
+
+```
+## [1] 0.6918683
+```
+
+### and the upper bound
+
+
+```r
+phat - qnorm(.975)*sqrt(phat*(1-phat)/n)
+```
+
+```
+## [1] 0.6918683
+```
+
+
+---
+
+# Step 5. Celebrate! You're done!!
+
+---
+
+# Step 6. Practice
+
+---
+
+### What if I had asked about survivorship for children on the titanic differing from .5.
+
+
+
+
+
+
+
+---
+
+class: inverse, center, middle
+
+# Part II: Means of quantitative variable
+
+--
+
+## This part deals with continuous (numeric, multi values) data.
+
+
+
+---
+
+## Consider the wait time between each erruption blast of the Old Faithful Geysers
+https://www.yellowstonepark.com/things-to-do/geysers-hot-springs/about-old-faithful/:
+
+--
+
+You are visiting the park, and want to know how long you will have to wait between each erruption.
+
+--
+
+A friend tells you it will be on average an hour between each eruption.
+
+--
+
+But you have some data on wait times, and you want to know if it will take *more* than an hour.
+
+
+
+---
+
+
+---
+class: inverse, center, middle
+
+# Step 1: Collecting the basic facts of the question
+
+
+---
+
+## What is the name of the theory-based test we should use?
+
+--
+
+*One sample t Test*
+
+--
+
+## What are our Hypotheses?
+
+--
+
+ $$ H_0: \mu = 60min $$
+
+--
+
+### Which implies
+
+ $$ H_A: \mu &gt;  60min $$  
+--
+
+### but we know other inequalites are possible;
+--
+reread question to verify you got the right one
+--
+ 
+
+---
+
+
+```r
+head(faithful) # snapshot of faithful data available in R
+```
+
+```
+##   eruptions waiting
+## 1     3.600      79
+## 2     1.800      54
+## 3     3.333      74
+## 4     2.283      62
+## 5     4.533      85
+## 6     2.883      55
+```
+
+```r
+library(skimr)
+skim(faithful)
+```
+
+```
+## Skim summary statistics
+##  n obs: 272 
+##  n variables: 2 
+##  group variables:  
+## 
+## ── Variable type:numeric ───────────────────────────────────────────────────────
+##   variable missing complete   n  mean    sd   p0   p25 p50   p75 p100     hist
+##  eruptions       0      272 272  3.49  1.14  1.6  2.16   4  4.45  5.1 ▇▃▁▁▂▅▇▃
+##    waiting       0      272 272 70.9  13.59 43   58     76 82    96   ▂▅▃▂▅▇▆▂
+```
+
+--
+
+## Is there evidence that the wait time will actually average more than an hour?
+
+
+
+
+---
+
+# Now let's also summarize the basic facts of this case in code and save objects in the R environment (n, phat, and pi)
+
+
+---
+
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# sample size
+*272
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+```
+## [1] 272
+```
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# sample size
+272 -&gt;
+* n
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# sample size
+272 -&gt;
+  n
+
+# observed mean 71 minutes
+*70.9
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+```
+## [1] 70.9
+```
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# sample size
+272 -&gt;
+  n
+
+# observed mean 71 minutes
+70.9 -&gt;
+* xbar
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# sample size
+272 -&gt;
+  n
+
+# observed mean 71 minutes
+70.9 -&gt;
+  xbar
+
+# the sample standard deviation is
+*1.14
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+```
+## [1] 1.14
+```
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# sample size
+272 -&gt;
+  n
+
+# observed mean 71 minutes
+70.9 -&gt;
+  xbar
+
+# the sample standard deviation is
+1.14 -&gt;
+* s
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# sample size
+272 -&gt;
+  n
+
+# observed mean 71 minutes
+70.9 -&gt;
+  xbar
+
+# the sample standard deviation is
+1.14 -&gt;
+  s
+
+# proposed parameter
+# mu is an hour
+*60
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+```
+## [1] 60
+```
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# sample size
+272 -&gt;
+  n
+
+# observed mean 71 minutes
+70.9 -&gt;
+  xbar
+
+# the sample standard deviation is
+1.14 -&gt;
+  s
+
+# proposed parameter
+# mu is an hour
+60 -&gt;
+* mu
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# sample size
+272 -&gt;
+  n
+
+# observed mean 71 minutes
+70.9 -&gt;
+  xbar
+
+# the sample standard deviation is
+1.14 -&gt;
+  s
+
+# proposed parameter
+# mu is an hour
+60 -&gt;
+  mu
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+]
+
+&lt;style&gt;
+.panel1-preliminaries2-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-preliminaries2-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-preliminaries2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+---
+class: inverse, center, middle
+
+# Step 2. How far am I into the tails of the null distribution?
+--
+Calculating the standardized statistic
+--
+(t in this case)
+
+
+
+
+---
+
+### Okay. Let's look at *calculating* the test statistic: t
+
+--
+
+### (i.e. how far in the null distribution are we out in standard deviations?)
+
+--
+
+##  $$ Z = \frac{\bar{x}-\mu}{SD_{null}}$$
+--
+where
+
+## $$ SD_{null} = \frac{s}{\sqrt{n}}$$
+
+
+
+
+
+
+
+---
+
+count: false
+ 
+
+.panel1-standardized2-auto[
+
+```r
+# lets just compute the numerator
+*xbar - mu
+```
+]
+ 
+.panel2-standardized2-auto[
+
+```
+## [1] 10.9
+```
+]
+
+---
+count: false
+ 
+
+.panel1-standardized2-auto[
+
+```r
+# lets just compute the numerator
+xbar - mu -&gt;
+* t_numerator
+```
+]
+ 
+.panel2-standardized2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-standardized2-auto[
+
+```r
+# lets just compute the numerator
+xbar - mu -&gt;
+  t_numerator
+
+# and now the denominator
+*s/sqrt(n)
+```
+]
+ 
+.panel2-standardized2-auto[
+
+```
+## [1] 0.06912265
+```
+]
+
+---
+count: false
+ 
+
+.panel1-standardized2-auto[
+
+```r
+# lets just compute the numerator
+xbar - mu -&gt;
+  t_numerator
+
+# and now the denominator
+s/sqrt(n) -&gt;
+* sd_null
+```
+]
+ 
+.panel2-standardized2-auto[
+
+]
+
+---
+count: false
+ 
+
+.panel1-standardized2-auto[
+
+```r
+# lets just compute the numerator
+xbar - mu -&gt;
+  t_numerator
+
+# and now the denominator
+s/sqrt(n) -&gt;
+  sd_null
+
+# and combining
+*t_numerator/sd_null
+```
+]
+ 
+.panel2-standardized2-auto[
+
+```
+## [1] 157.6907
+```
+]
+
+---
+count: false
+ 
+
+.panel1-standardized2-auto[
+
+```r
+# lets just compute the numerator
+xbar - mu -&gt;
+  t_numerator
+
+# and now the denominator
+s/sqrt(n) -&gt;
+  sd_null
+
+# and combining
+t_numerator/sd_null -&gt;
+* t
+```
+]
+ 
+.panel2-standardized2-auto[
+
+]
+
+&lt;style&gt;
+.panel1-standardized2-auto {
+  color: black;
+  width: 38.6060606060606%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel2-standardized2-auto {
+  color: black;
+  width: 59.3939393939394%;
+  hight: 32%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+.panel3-standardized2-auto {
+  color: black;
+  width: NA%;
+  hight: 33%;
+  float: left;
+  padding-left: 1%;
+  font-size: 80%
+}
+&lt;/style&gt;
+
+
+
+
+
+
+
+---
+
+So what I'm picturing is...
+
+--
+
+![](worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+--
+
+So I'm way out in the tail of that null distribution.
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Step 3: Express this extremeness as a p-value.
+--
+
+### In other words, how likely am I to observe something as extreme or more extreme than my statistic (x-bar in this case), if the null is true;
+--
+p-value expresses this as a proportion (logical max 1 - totally consistent w/ null; logical min 0 -- totally inconsistent with null);  
+--
+The smaller the p-value, the more inconsistent w/ the null.
+
+
+---
+
+### Calculating the p-value depends on t and which inequality I used in my hypotheses set up.  
+--
+I know I'll use the function pt(),
+--
+and choose from the code based on my alternative hypothesis:
+
+--
+
+|Alternative Hypothesis|R Code|
+|:--------------------:|------|
+|$$ &gt; $$|`1-pt(t, df = n-1)`|
+|$$ &lt; $$|`pt(t, df = n-1)`|
+|$$ \neq$$|`2*(1-pt(abs(t), df = n-1))`|
+
+
+---
+
+## I'll use the two-tailed test; after double checking the question wording: "Is the wait time greater than".
+
+--
+
+## So...
+
+
+```r
+1-pt(t, df = n-1)
+```
+
+```
+## [1] 0
+```
+
+--
+
+### The p-value output is computationally zero!  
+
+--
+
+### So my observed value p-hat, 70.9, is quite inconsistent with the null.
+
+--
+
+### There is very strong evidence against the null hypothesis.
+
+
+
+---
+class: inverse, center, middle
+
+# Step 4. What are plausible values of the parameter?
+
+
+--
+### The confidence interval?
+--
+what are values that are consistent with the observed statistic?
+--
+
+
+---
+
+### I want to look at the interval centered around xbar, that will contain $ \Pi $ 95% (or sometimes 90% or 99%) of the time in repeated samples.
+
+--
+
+### So I'm picturing a normal distribution centered at phat, and an interval under that, which when integrated encompasses 95% of the area, and is centered around my observed statistic, xbar
+
+
+```r
+library(ggstamp)
+c(rep(0, 126), rep(1, 344)) -&gt; x
+
+ggcanvas() +
+  scale_x_continuous(limits = 0:1) +
+  geom_vline(xintercept = 0:1, linetype = "dotted") +
+  geom_vline(xintercept = Pi,
+             linetype = "dashed") +
+  geom_vline(xintercept = phat) +
+  ggxmean:::geom_ttestconf(data = tibble(x = x),
+                           aes(x = x),
+                           color = "darkred",
+                           size = 3) +
+  ggxmean:::geom_tdist(data = tibble(x = x),
+                           aes(x = x),
+                           fill = "goldenrod3",
+                       height = .45) +
+  NULL
+```
+
+---
+## The confidence interval is:
+
+# $$ \bar{x} \pm M*SE   $$
+--
+
+### where:
+
+### M, the multiplier, is determined by the significance level that's desired; 95, 99 or 90 are common.
+
+--
+### and where:
+
+$$ SE = \frac{s}{\sqrt{n}} $$
+
+
+---
+
+
+## So, I look up the *R code* needed for M in this table.
+--
+
+
+|**Confidence Level**|**Multiplier (Categorical)**|**Multiplier (Quantitative)**|
+|-------------------|-----------------------|-------------------------|
+|90%|qnorm(.95)| qt(.95,n-1) or qt(.95,n-2)|
+|95%|qnorm(.975)|qt(.975,n-1) or qt(.975,n-2)|
+|99%|qnorm(.995)|qt(.995,n-1) or qt(.995,n-2)|
+
+--
+
+### and compute the lower bound
+
+
+
+```r
+phat - qnorm(.975)*sqrt(phat*(1-phat)/n)
+```
+
+```
+## [1] 0.6792731
+```
+
+### and the upper bound
+
+
+```r
+phat - qnorm(.975)*sqrt(phat*(1-phat)/n)
+```
+
+```
+## [1] 0.6792731
+```
+
+
+---
+
+# Step 5. Celebrate! You're done!!
+
+---
+
+# Step 6. Practice
+
+---
+
+### What if I had asked about length of the erruption time itself?
+
+
+
+
+
+
+
+
+
+```r
+faithful %&gt;% skimr::skim()
+```
+
+```
+## Skim summary statistics
+##  n obs: 272 
+##  n variables: 2 
+##  group variables:  
+## 
+## ── Variable type:numeric ───────────────────────────────────────────────────────
+##   variable missing complete   n  mean    sd   p0   p25 p50   p75 p100     hist
+##  eruptions       0      272 272  3.49  1.14  1.6  2.16   4  4.45  5.1 ▇▃▁▁▂▅▇▃
+##    waiting       0      272 272 70.9  13.59 43   58     76 82    96   ▂▅▃▂▅▇▆▂
+```
+
+```r
+faithful %&gt;% summary()
+```
+
+```
+##    eruptions        waiting    
+##  Min.   :1.600   Min.   :43.0  
+##  1st Qu.:2.163   1st Qu.:58.0  
+##  Median :4.000   Median :76.0  
+##  Mean   :3.488   Mean   :70.9  
+##  3rd Qu.:4.454   3rd Qu.:82.0  
+##  Max.   :5.100   Max.   :96.0
+```
+
+```r
+faithful
+```
+
+```
+##     eruptions waiting
+## 1       3.600      79
+## 2       1.800      54
+## 3       3.333      74
+## 4       2.283      62
+## 5       4.533      85
+## 6       2.883      55
+## 7       4.700      88
+## 8       3.600      85
+## 9       1.950      51
+## 10      4.350      85
+## 11      1.833      54
+## 12      3.917      84
+## 13      4.200      78
+## 14      1.750      47
+## 15      4.700      83
+## 16      2.167      52
+## 17      1.750      62
+## 18      4.800      84
+## 19      1.600      52
+## 20      4.250      79
+## 21      1.800      51
+## 22      1.750      47
+## 23      3.450      78
+## 24      3.067      69
+## 25      4.533      74
+## 26      3.600      83
+## 27      1.967      55
+## 28      4.083      76
+## 29      3.850      78
+## 30      4.433      79
+## 31      4.300      73
+## 32      4.467      77
+## 33      3.367      66
+## 34      4.033      80
+## 35      3.833      74
+## 36      2.017      52
+## 37      1.867      48
+## 38      4.833      80
+## 39      1.833      59
+## 40      4.783      90
+## 41      4.350      80
+## 42      1.883      58
+## 43      4.567      84
+## 44      1.750      58
+## 45      4.533      73
+## 46      3.317      83
+## 47      3.833      64
+## 48      2.100      53
+## 49      4.633      82
+## 50      2.000      59
+## 51      4.800      75
+## 52      4.716      90
+## 53      1.833      54
+## 54      4.833      80
+## 55      1.733      54
+## 56      4.883      83
+## 57      3.717      71
+## 58      1.667      64
+## 59      4.567      77
+## 60      4.317      81
+## 61      2.233      59
+## 62      4.500      84
+## 63      1.750      48
+## 64      4.800      82
+## 65      1.817      60
+## 66      4.400      92
+## 67      4.167      78
+## 68      4.700      78
+## 69      2.067      65
+## 70      4.700      73
+## 71      4.033      82
+## 72      1.967      56
+## 73      4.500      79
+## 74      4.000      71
+## 75      1.983      62
+## 76      5.067      76
+## 77      2.017      60
+## 78      4.567      78
+## 79      3.883      76
+## 80      3.600      83
+## 81      4.133      75
+## 82      4.333      82
+## 83      4.100      70
+## 84      2.633      65
+## 85      4.067      73
+## 86      4.933      88
+## 87      3.950      76
+## 88      4.517      80
+## 89      2.167      48
+## 90      4.000      86
+## 91      2.200      60
+## 92      4.333      90
+## 93      1.867      50
+## 94      4.817      78
+## 95      1.833      63
+## 96      4.300      72
+## 97      4.667      84
+## 98      3.750      75
+## 99      1.867      51
+## 100     4.900      82
+## 101     2.483      62
+## 102     4.367      88
+## 103     2.100      49
+## 104     4.500      83
+## 105     4.050      81
+## 106     1.867      47
+## 107     4.700      84
+## 108     1.783      52
+## 109     4.850      86
+## 110     3.683      81
+## 111     4.733      75
+## 112     2.300      59
+## 113     4.900      89
+## 114     4.417      79
+## 115     1.700      59
+## 116     4.633      81
+## 117     2.317      50
+## 118     4.600      85
+## 119     1.817      59
+## 120     4.417      87
+## 121     2.617      53
+## 122     4.067      69
+## 123     4.250      77
+## 124     1.967      56
+## 125     4.600      88
+## 126     3.767      81
+## 127     1.917      45
+## 128     4.500      82
+## 129     2.267      55
+## 130     4.650      90
+## 131     1.867      45
+## 132     4.167      83
+## 133     2.800      56
+## 134     4.333      89
+## 135     1.833      46
+## 136     4.383      82
+## 137     1.883      51
+## 138     4.933      86
+## 139     2.033      53
+## 140     3.733      79
+## 141     4.233      81
+## 142     2.233      60
+## 143     4.533      82
+## 144     4.817      77
+## 145     4.333      76
+## 146     1.983      59
+## 147     4.633      80
+## 148     2.017      49
+## 149     5.100      96
+## 150     1.800      53
+## 151     5.033      77
+## 152     4.000      77
+## 153     2.400      65
+## 154     4.600      81
+## 155     3.567      71
+## 156     4.000      70
+## 157     4.500      81
+## 158     4.083      93
+## 159     1.800      53
+## 160     3.967      89
+## 161     2.200      45
+## 162     4.150      86
+## 163     2.000      58
+## 164     3.833      78
+## 165     3.500      66
+## 166     4.583      76
+## 167     2.367      63
+## 168     5.000      88
+## 169     1.933      52
+## 170     4.617      93
+## 171     1.917      49
+## 172     2.083      57
+## 173     4.583      77
+## 174     3.333      68
+## 175     4.167      81
+## 176     4.333      81
+## 177     4.500      73
+## 178     2.417      50
+## 179     4.000      85
+## 180     4.167      74
+## 181     1.883      55
+## 182     4.583      77
+## 183     4.250      83
+## 184     3.767      83
+## 185     2.033      51
+## 186     4.433      78
+## 187     4.083      84
+## 188     1.833      46
+## 189     4.417      83
+## 190     2.183      55
+## 191     4.800      81
+## 192     1.833      57
+## 193     4.800      76
+## 194     4.100      84
+## 195     3.966      77
+## 196     4.233      81
+## 197     3.500      87
+## 198     4.366      77
+## 199     2.250      51
+## 200     4.667      78
+## 201     2.100      60
+## 202     4.350      82
+## 203     4.133      91
+## 204     1.867      53
+## 205     4.600      78
+## 206     1.783      46
+## 207     4.367      77
+## 208     3.850      84
+## 209     1.933      49
+## 210     4.500      83
+## 211     2.383      71
+## 212     4.700      80
+## 213     1.867      49
+## 214     3.833      75
+## 215     3.417      64
+## 216     4.233      76
+## 217     2.400      53
+## 218     4.800      94
+## 219     2.000      55
+## 220     4.150      76
+## 221     1.867      50
+## 222     4.267      82
+## 223     1.750      54
+## 224     4.483      75
+## 225     4.000      78
+## 226     4.117      79
+## 227     4.083      78
+## 228     4.267      78
+## 229     3.917      70
+## 230     4.550      79
+## 231     4.083      70
+## 232     2.417      54
+## 233     4.183      86
+## 234     2.217      50
+## 235     4.450      90
+## 236     1.883      54
+## 237     1.850      54
+## 238     4.283      77
+## 239     3.950      79
+## 240     2.333      64
+## 241     4.150      75
+## 242     2.350      47
+## 243     4.933      86
+## 244     2.900      63
+## 245     4.583      85
+## 246     3.833      82
+## 247     2.083      57
+## 248     4.367      82
+## 249     2.133      67
+## 250     4.350      74
+## 251     2.200      54
+## 252     4.450      83
+## 253     3.567      73
+## 254     4.500      73
+## 255     4.150      88
+## 256     3.817      80
+## 257     3.917      71
+## 258     4.450      83
+## 259     2.000      56
+## 260     4.283      79
+## 261     4.767      78
+## 262     4.533      84
+## 263     1.850      58
+## 264     4.250      83
+## 265     1.983      43
+## 266     2.250      60
+## 267     4.750      75
+## 268     4.117      81
+## 269     2.150      46
+## 270     4.417      90
+## 271     1.817      46
+## 272     4.467      74
+```
+
+```r
+library(skimr)
+skim(faithful)
+```
+
+```
+## Skim summary statistics
+##  n obs: 272 
+##  n variables: 2 
+##  group variables:  
+## 
+## ── Variable type:numeric ───────────────────────────────────────────────────────
+##   variable missing complete   n  mean    sd   p0   p25 p50   p75 p100     hist
+##  eruptions       0      272 272  3.49  1.14  1.6  2.16   4  4.45  5.1 ▇▃▁▁▂▅▇▃
+##    waiting       0      272 272 70.9  13.59 43   58     76 82    96   ▂▅▃▂▅▇▆▂
+```
+
+```r
+xbar=70.9
+mu= 60
+S= 13.6
+n= 272
+t_numerator= xbar-mu  
+SE= S/(sqrt(n))
+t_numerator/SE
+```
+
+```
+## [1] 13.21819
+```
+
+```r
+1-pt(13.21819, df=271)
+```
+
+```
+## [1] 0
+```
+
+```r
+xbar-qt(.975,n-1)*SE
+```
+
+```
+## [1] 69.27652
+```
+
+```r
+xbar+qt(.975,n-1)*SE
+```
+
+```
+## [1] 72.52348
+```
+
+
+
+```r
+skim(faithful)        
+```
+
+```
+## Skim summary statistics
+##  n obs: 272 
+##  n variables: 2 
+##  group variables:  
+## 
+## ── Variable type:numeric ───────────────────────────────────────────────────────
+##   variable missing complete   n  mean    sd   p0   p25 p50   p75 p100     hist
+##  eruptions       0      272 272  3.49  1.14  1.6  2.16   4  4.45  5.1 ▇▃▁▁▂▅▇▃
+##    waiting       0      272 272 70.9  13.59 43   58     76 82    96   ▂▅▃▂▅▇▆▂
+```
+
+```r
+xbar= 3.49
+mu= 3
+# compute t the test statistic
+t_numerator= xbar-mu
+n= 272
+# compute SE
+S= 1.14
+SE= S/sqrt(n)
+t_numerator/SE
+```
+
+```
+## [1] 7.088848
+```
+
+```r
+t=t_numerator/SE
+1-pt(t, df= 271)
+```
+
+```
+## [1] 5.867418e-12
+```
+
+```r
+xbar-qt(.995,n-1)*SE
+```
+
+```
+## [1] 3.310689
+```
+
+```r
+xbar+qt(.995,n-1)*SE
+```
+
+```
+## [1] 3.669311
+```
+
+
+---
+
+
+
+
+
+&lt;!-- adjust font size in this css code chunk, currently 80 --&gt;
+
+&lt;style type="text/css"&gt;
+.remark-code{line-height: 1.5; font-size: 120%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+&lt;/style&gt;
+
+
+
+---
+
+# Notes:
+
+- This minimal flipbook assumes you are online when you build and view.  It is going to find the most recent remark.js info online.
+
+- xaringan/remark.js slideshows are not self contained, single file slide shows.  Make sure you ship all the associated files that are created to display your flipbooks/slideshows.  I like to push .html and associated files to github repository and use Github Pages to host for beyond local sharing. :-)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

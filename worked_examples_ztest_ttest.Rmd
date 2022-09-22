@@ -1,0 +1,816 @@
+---
+title: "Worked examples"
+subtitle: "One proportion z test, and One sample t test"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: [default, hygge, ninjutsu]
+    nature:
+      ratio: 16:9
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+
+class: inverse, center, middle
+
+# Part I: Proportions
+
+--
+
+## This part is about when there are two outcomes.
+
+
+---
+
+## Consider the observed data for survivorship data of female passengers on the Titanic:
+
+--
+
+
+
+
+```{r, include = F}
+library(tidyverse)
+library(flipbookr)
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+```{r, echo = F, eval = F}
+tidytitanic::tidy_titanic %>%
+  tidypivot::pivot_count(sex, survived) %>%
+  select(Female, survived) %>%
+  knitr::kable()
+```
+
+--
+
+## Does this outcome differ from an underlying process where probability of surviving is 50/50 (proportion = .5)?
+
+
+---
+class: inverse, center, middle
+
+# Step 1: Collecting the basic facts of the question
+
+
+---
+
+## What is the name of the theory-based test we should use?
+
+--
+
+*One proportion Z Test*
+
+--
+
+## What are our Hypotheses?
+
+--
+
+ $$ H_0: \Pi = .5 $$
+
+--
+
+### Which implies
+
+ $$ H_A: \Pi \neq  .5 $$  
+--
+
+### but we know other inequalites (>, <) are possible;
+--
+reread question to verify you got the right one
+--
+ 
+
+---
+
+
+---
+
+# Now let's also summarize the basic facts of this case in code and save objects in the R environment (n, phat, and pi)
+
+
+---
+
+`r chunk_reveal("preliminaries", title = "## The basic facts, recorded as R objects")`
+
+```{r preliminaries, include = F}
+# sample size
+126 + 344 ->
+  n
+
+# observed proportion
+344/n ->
+  phat
+
+# proposed parameter
+.5 ->
+  Pi
+
+```
+
+---
+class: inverse, center, middle
+
+# Step 2. How far am I into the tails of the null distribution?
+--
+Calculating the standardized statistic
+--
+(Z in this case)
+
+
+
+
+---
+
+### Okay. Let's look at *calculating* the test statistic: Z
+
+--
+
+### (i.e. how far in the null distribution are we out in standard deviations?)
+
+--
+
+##  $$ Z = \frac{\hat{p}-\Pi}{SD_{null}}$$
+--
+where
+
+## $$ SD_{null} = \sqrt{\frac{\Pi*(1-\Pi)}{n}}$$
+
+
+
+
+
+
+
+---
+
+`r chunk_reveal('standardized')`
+
+
+```{r standardized, include = F}
+# lets just compute the numerator
+phat - Pi ->
+  z_numerator
+
+# and now the denominator
+sqrt(Pi*(1-Pi)/n) ->
+  sd_null
+
+# and combining
+z_numerator/sd_null ->
+  z
+```
+
+
+---
+
+So what I'm picturing is...
+
+--
+
+```{r, echo = F}
+library(ggstamp)
+ggcanvas() +
+  scale_x_continuous(limits = 0:1) +
+  geom_vline(xintercept = 0:1, linetype = "dotted") +
+  geom_vline(xintercept = Pi,
+             linetype = "dotted") +
+  geom_vline(xintercept = phat) +
+  ggxmean:::stamp_normal_dist(sd = sd_null,
+                              mean = Pi) +
+  ggxmean:::stamp_normal_dist_zlines(sd = sd_null,
+                                     mean = Pi,
+                                     height = .023) +
+  NULL
+
+```
+
+--
+
+So I'm way out in the tail of that null distribution.
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Step 3: Express this extremeness as a p-value.
+--
+
+### In other words, how likely am I to observe something as extreme or more extreme than my statistic (phat in this case), if the null is true;
+--
+p-value expresses this as a proportion (logical max 1 - totally consistent w/ null; logical min 0 -- totally inconsistent with null);  
+--
+The smaller the p-value, the more inconsistent w/ the null.
+
+
+---
+
+### Calculating the p-value depends on Z and which inequality I used in my hypotheses set up.  
+--
+I know I'll use the function pnorm(),
+--
+and choose from the code based on my alternative hypothesis:
+
+--
+
+|Alternative Hypothesis|R Code|
+|:--------------------:|------|
+|$$ > $$|`1-pnorm(z)`|
+|$$ < $$|`pnorm(z)`|
+|$$ \neq$$|`2*(1-pnorm(abs(z)))`|
+
+
+---
+
+## I'll use the two-tailed test; after double checking the question wording: "Does this outcome *differ...*".
+
+--
+
+## So...
+
+```{r}
+2*(1-pnorm(abs(z)))
+```
+
+--
+
+### The p-value output is computationally zero!  
+
+--
+
+### So my observed value p-hat, `r round(phat, 2)`, is quite inconsistent with the null.
+
+--
+
+### There is very strong evidence against the null hypothesis.
+
+
+
+---
+class: inverse, center, middle
+
+# Step 4. What are plausible values of the parameter?
+
+
+--
+### The confidence interval?
+--
+what are values that are consistent with the observed statistic?
+--
+
+
+---
+
+### I want to look at the interval centered around p-hat, that will contain $ \Pi $ 95% (or sometimes 90% or 99%) of the time in repeated samples.
+
+--
+
+### So I'm picturing a normal distribution centered at phat, and an interval under that, which when integrated encompasses 95% of the area...
+
+```{r, echo = F}
+library(ggstamp)
+c(rep(0, 126), rep(1, 344)) -> x
+
+ggcanvas() +
+  scale_x_continuous(limits = 0:1) +
+  geom_vline(xintercept = 0:1, linetype = "dotted") +
+  geom_vline(xintercept = Pi,
+             linetype = "dashed") +
+  geom_vline(xintercept = phat) +
+  ggxmean:::geom_ttestconf(data = tibble(x = x),
+                           aes(x = x),
+                           color = "darkred",
+                           size = 3) +
+  ggxmean:::geom_tdist(data = tibble(x = x),
+                           aes(x = x),
+                           fill = "goldenrod3",
+                       height = .45) +
+  NULL
+
+```
+
+---
+## The confidence interval is:
+
+# $$ phat \pm M*SE   $$
+--
+
+### where:
+
+### M, the multiplier, is determined by the significance level that's desired; 95, 99 or 90 are common.
+
+--
+### and where:
+
+$$ SE = \sqrt{\frac{\hat{p}*(1-\hat{p})}{n}} $$
+
+
+---
+
+
+## So, I look up the *R code* needed for M in this table.
+--
+
+
+|**Confidence Level**|**Multiplier (Categorical)**|**Multiplier (Quantitative)**|
+|-------------------|-----------------------|-------------------------|
+|90%|qnorm(.95)| qt(.95,n-1) or qt(.95,n-2)|
+|95%|qnorm(.975)|qt(.975,n-1) or qt(.975,n-2)|
+|99%|qnorm(.995)|qt(.995,n-1) or qt(.995,n-2)|
+
+--
+
+### and compute the lower bound
+
+
+```{r}
+phat - qnorm(.975)*sqrt(phat*(1-phat)/n)
+```
+
+### and the upper bound
+
+```{r}
+phat - qnorm(.975)*sqrt(phat*(1-phat)/n)
+```
+
+
+---
+
+# Step 5. Celebrate! You're done!!
+
+---
+
+# Step 6. Practice
+
+---
+
+### What if I had asked about survivorship for children on the titanic differing from .5.
+
+
+
+```{r, echo = F, eval = F}
+tidytitanic::tidy_titanic %>%
+  tidypivot::pivot_count(age, survived) %>%
+  select(Child, survived) %>%
+  knitr::kable()
+```
+
+
+
+---
+
+class: inverse, center, middle
+
+# Part II: Means of quantitative variable
+
+--
+
+## This part deals with continuous (numeric, multi values) data.
+
+
+
+---
+
+## Consider the wait time between each erruption blast of the Old Faithful Geysers
+https://www.yellowstonepark.com/things-to-do/geysers-hot-springs/about-old-faithful/:
+
+--
+
+You are visiting the park, and want to know how long you will have to wait between each erruption.
+
+--
+
+A friend tells you it will be on average an hour between each eruption.
+
+--
+
+But you have some data on wait times, and you want to know if it will take *more* than an hour.
+
+
+
+---
+
+
+---
+class: inverse, center, middle
+
+# Step 1: Collecting the basic facts of the question
+
+
+---
+
+## What is the name of the theory-based test we should use?
+
+--
+
+*One sample t Test*
+
+--
+
+## What are our Hypotheses?
+
+--
+
+ $$ H_0: \mu = 60min $$
+
+--
+
+### Which implies
+
+ $$ H_A: \mu >  60min $$  
+--
+
+### but we know other inequalites are possible;
+--
+reread question to verify you got the right one
+--
+ 
+
+---
+
+```{r data}
+head(faithful) # snapshot of faithful data available in R
+
+library(skimr)
+skim(faithful)
+
+
+```
+
+--
+
+## Is there evidence that the wait time will actually average more than an hour?
+
+
+
+
+---
+
+# Now let's also summarize the basic facts of this case in code and save objects in the R environment (n, phat, and pi)
+
+
+---
+
+`r chunk_reveal("preliminaries2", title = "## The basic facts, recorded as R objects")`
+
+```{r preliminaries2, include = F}
+# sample size
+272 ->
+  n
+
+# observed mean 71 minutes
+70.9 ->
+  xbar
+
+# the sample standard deviation is
+1.14 ->
+  s
+
+# proposed parameter
+# mu is an hour
+60 ->
+  mu
+
+```
+
+---
+class: inverse, center, middle
+
+# Step 2. How far am I into the tails of the null distribution?
+--
+Calculating the standardized statistic
+--
+(t in this case)
+
+
+
+
+---
+
+### Okay. Let's look at *calculating* the test statistic: t
+
+--
+
+### (i.e. how far in the null distribution are we out in standard deviations?)
+
+--
+
+##  $$ Z = \frac{\bar{x}-\mu}{SD_{null}}$$
+--
+where
+
+## $$ SD_{null} = \frac{s}{\sqrt{n}}$$
+
+
+
+
+
+
+
+---
+
+`r chunk_reveal('standardized2')`
+
+
+```{r standardized2, include = F}
+# lets just compute the numerator
+xbar - mu ->
+  t_numerator
+
+# and now the denominator
+s/sqrt(n) ->
+  sd_null
+
+# and combining
+t_numerator/sd_null ->
+  t
+```
+
+
+---
+
+So what I'm picturing is...
+
+--
+
+```{r, echo = F}
+ggplot(faithful) +
+  aes(x = waiting) +
+  geom_dotplot(dotsize = .7) +
+  # geom_vline(xintercept = xbar,
+  #            linetype = "dotted",
+  #            color = "red") +
+  # geom_vline(xintercept = mu,
+  #            linetype = "dashed",
+  #            color = "blue") +
+  ggxmean:::stamp_normal_dist(sd = sd_null,
+                              mean = mu,
+                              alpha = .9,
+                              fill = "darkred",
+                              height = 5, size =2) +
+  NULL
+
+```
+
+--
+
+So I'm way out in the tail of that null distribution.
+
+
+
+
+---
+class: inverse, center, middle
+
+
+# Step 3: Express this extremeness as a p-value.
+--
+
+### In other words, how likely am I to observe something as extreme or more extreme than my statistic (x-bar in this case), if the null is true;
+--
+p-value expresses this as a proportion (logical max 1 - totally consistent w/ null; logical min 0 -- totally inconsistent with null);  
+--
+The smaller the p-value, the more inconsistent w/ the null.
+
+
+---
+
+### Calculating the p-value depends on t and which inequality I used in my hypotheses set up.  
+--
+I know I'll use the function pt(),
+--
+and choose from the code based on my alternative hypothesis:
+
+--
+
+|Alternative Hypothesis|R Code|
+|:--------------------:|------|
+|$$ > $$|`1-pt(t, df = n-1)`|
+|$$ < $$|`pt(t, df = n-1)`|
+|$$ \neq$$|`2*(1-pt(abs(t), df = n-1))`|
+
+
+---
+
+## I'll use the two-tailed test; after double checking the question wording: "Is the wait time greater than".
+
+--
+
+## So...
+
+```{r}
+1-pt(t, df = n-1)
+```
+
+--
+
+### The p-value output is computationally zero!  
+
+--
+
+### So my observed value p-hat, `r round(xbar, 2)`, is quite inconsistent with the null.
+
+--
+
+### There is very strong evidence against the null hypothesis.
+
+
+
+---
+class: inverse, center, middle
+
+# Step 4. What are plausible values of the parameter?
+
+
+--
+### The confidence interval?
+--
+what are values that are consistent with the observed statistic?
+--
+
+
+---
+
+### I want to look at the interval centered around xbar, that will contain $ \Pi $ 95% (or sometimes 90% or 99%) of the time in repeated samples.
+
+--
+
+### So I'm picturing a normal distribution centered at phat, and an interval under that, which when integrated encompasses 95% of the area, and is centered around my observed statistic, xbar
+
+```{r, eval = F}
+library(ggstamp)
+c(rep(0, 126), rep(1, 344)) -> x
+
+ggcanvas() +
+  scale_x_continuous(limits = 0:1) +
+  geom_vline(xintercept = 0:1, linetype = "dotted") +
+  geom_vline(xintercept = Pi,
+             linetype = "dashed") +
+  geom_vline(xintercept = phat) +
+  ggxmean:::geom_ttestconf(data = tibble(x = x),
+                           aes(x = x),
+                           color = "darkred",
+                           size = 3) +
+  ggxmean:::geom_tdist(data = tibble(x = x),
+                           aes(x = x),
+                           fill = "goldenrod3",
+                       height = .45) +
+  NULL
+
+```
+
+---
+## The confidence interval is:
+
+# $$ \bar{x} \pm M*SE   $$
+--
+
+### where:
+
+### M, the multiplier, is determined by the significance level that's desired; 95, 99 or 90 are common.
+
+--
+### and where:
+
+$$ SE = \frac{s}{\sqrt{n}} $$
+
+
+---
+
+
+## So, I look up the *R code* needed for M in this table.
+--
+
+
+|**Confidence Level**|**Multiplier (Categorical)**|**Multiplier (Quantitative)**|
+|-------------------|-----------------------|-------------------------|
+|90%|qnorm(.95)| qt(.95,n-1) or qt(.95,n-2)|
+|95%|qnorm(.975)|qt(.975,n-1) or qt(.975,n-2)|
+|99%|qnorm(.995)|qt(.995,n-1) or qt(.995,n-2)|
+
+--
+
+### and compute the lower bound
+
+
+```{r}
+phat - qnorm(.975)*sqrt(phat*(1-phat)/n)
+```
+
+### and the upper bound
+
+```{r}
+phat - qnorm(.975)*sqrt(phat*(1-phat)/n)
+```
+
+
+---
+
+# Step 5. Celebrate! You're done!!
+
+---
+
+# Step 6. Practice
+
+---
+
+### What if I had asked about length of the erruption time itself?
+
+
+
+```{r}
+
+```
+
+
+
+
+```{r}
+faithful %>% skimr::skim()
+
+faithful %>% summary()
+
+faithful
+library(skimr)
+skim(faithful)
+xbar=70.9
+mu= 60
+S= 13.6
+n= 272
+t_numerator= xbar-mu  
+SE= S/(sqrt(n))
+t_numerator/SE
+1-pt(13.21819, df=271)
+xbar-qt(.975,n-1)*SE
+xbar+qt(.975,n-1)*SE
+```
+
+
+```{r}
+skim(faithful)        
+xbar= 3.49
+mu= 3
+# compute t the test statistic
+t_numerator= xbar-mu
+n= 272
+# compute SE
+S= 1.14
+SE= S/sqrt(n)
+t_numerator/SE
+t=t_numerator/SE
+1-pt(t, df= 271)
+xbar-qt(.995,n-1)*SE
+xbar+qt(.995,n-1)*SE
+
+
+```
+
+
+---
+
+
+
+
+
+<!-- adjust font size in this css code chunk, currently 80 -->
+
+```{css, eval = TRUE, echo = FALSE}
+.remark-code{line-height: 1.5; font-size: 120%}
+
+@media print {
+  .has-continuation {
+    display: block;
+  }
+}
+
+code.r.hljs.remark-code{
+  position: relative;
+  overflow-x: hidden;
+}
+
+
+code.r.hljs.remark-code:hover{
+  overflow-x:visible;
+  width: 500px;
+  border-style: solid;
+}
+```
+
+
+
+---
+
+# Notes:
+
+- This minimal flipbook assumes you are online when you build and view.  It is going to find the most recent remark.js info online.
+
+- xaringan/remark.js slideshows are not self contained, single file slide shows.  Make sure you ship all the associated files that are created to display your flipbooks/slideshows.  I like to push .html and associated files to github repository and use Github Pages to host for beyond local sharing. :-)
+
+
