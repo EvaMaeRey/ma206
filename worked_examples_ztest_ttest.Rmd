@@ -398,23 +398,47 @@ tidytitanic::tidy_titanic %>%
   knitr::kable()
 ```
 
+---
+
 
 
 ---
 
 class: inverse, center, middle
 
-# Part II: Means of quantitative variable
+# Part II: *Means* (average) of quantitative variable
 
 --
 
-## This part deals with continuous (numeric, multi values) data.
+## This part deals with *continuous* (numeric, multi values) data.
+
+
 
 
 
 ---
 
-```{r}
+## Consider chicks weight at 6 weeks.  You know a chicken farmer and she asserts that chicks will weigh 250 grams on average at six weeks.
+
+--
+
+but you visit a farm and collect some data and you think that chicks actually might weigh more than the proposed 250 grams on average.
+--
+
+See the summary of `chickwts` on the next slide.  
+
+---
+
+```{r data, comment=""}
+library(skimr)
+skim(chickwts)
+
+
+```
+
+---
+
+```{r, echo = F}
 ggplot(chickwts) +
  aes(x = weight) +
   geom_dotplot(dotsize = .7) +
@@ -424,25 +448,6 @@ ggplot(chickwts) +
                        label = "A chicken farming friend told me that at 6 weeks, chicks will  weigh 250 grams on average.  I have some data. I want to know if what I observe is consistent with this" %>% str_wrap(50)) +
   NULL
 ```
-
----
-
-## Consider the wait time between each erruption blast of the Old Faithful Geysers
-https://www.yellowstonepark.com/things-to-do/geysers-hot-springs/about-old-faithful/:
-
---
-
-You are visiting the park, and want to know how long you will have to wait between each erruption.
-
---
-
-A friend tells you it will be on average an hour between each eruption.
-
---
-
-But you have some data on wait times, and you want to know if it will take *more* than an hour.
-
----
 
 
 ---
@@ -457,7 +462,7 @@ class: inverse, center, middle
 
 --
 
-*One sample t Test*
+*One sample t-test*
 
 --
 
@@ -480,14 +485,7 @@ reread question to verify you got the right one
 --
  
 
----
 
-```{r data, comment=""}
-library(skimr)
-skim(chickwts)
-
-
-```
 
 --
 
@@ -506,6 +504,11 @@ skim(chickwts)
 `r chunk_reveal("preliminaries2", title = "## The basic facts, recorded as R objects")`
 
 ```{r preliminaries2, include = F}
+# proposed parameter
+# mu a mean of 250 grams
+250 ->
+  mu
+
 # sample size
 71 ->
   n
@@ -517,11 +520,6 @@ skim(chickwts)
 # the sample standard deviation is
 78.07 ->
   s
-
-# proposed parameter
-# mu is an hour
-250 ->
-  mu
 
 ```
 
@@ -639,7 +637,7 @@ and choose from the code based on my alternative hypothesis:
 
 ---
 
-## I'll use the two-tailed test; after double checking the question wording: "Is the wait time greater than".
+## I'll use the greater than test; after double checking the question wording: "Is the weight greater than...".
 
 --
 
@@ -651,15 +649,17 @@ and choose from the code based on my alternative hypothesis:
 
 --
 
-### The p-value output is computationally zero!  
+### The p-value output is `r 1 - pt(t, df = n-1)`; this is *not* a very small proportion of times.  
 
 --
 
-### So my observed value p-hat, `r round(xbar, 2)`, is quite inconsistent with the null.
+### So my observed value p-hat, `r round(xbar, 2)`, is consistent with the null.  
 
 --
 
-### There is very strong evidence against the null hypothesis.
+### There is little evidence against the null.
+
+--
 
 
 

@@ -684,90 +684,34 @@ margin_of_error = 2 * se
 
 
 
+---
+
 
 
 ---
 
 class: inverse, center, middle
 
-# Part II: Means of quantitative variable
+# Part II: *Means* (average) of quantitative variable
 
 --
 
-## This part deals with continuous (numeric, multi values) data.
+## This part deals with *continuous* (numeric, multi values) data.
+
+
 
 
 
 ---
 
-
-```r
-ggplot(chickwts) +
- aes(x = weight) +
-  geom_dotplot(dotsize = .7) +
-  ggxmean::geom_x_mean(linetype = "solid",
-             color = "goldenrod4")  +
-  ggstamp::stamp_label(x = 350, y = .5, 
-                       label = "A chicken farming friend told me that at 6 weeks, chicks will  weigh 250 grams on average.  I have some data. I want to know if what I observe is consistent with this" %&gt;% str_wrap(50)) +
-  NULL
-```
-
-![](worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
-
----
-
-## Consider the wait time between each erruption blast of the Old Faithful Geysers
-https://www.yellowstonepark.com/things-to-do/geysers-hot-springs/about-old-faithful/:
+## Consider chicks weight at 6 weeks.  You know a chicken farmer and she asserts that chicks will weigh 250 grams on average at six weeks.
 
 --
 
-You are visiting the park, and want to know how long you will have to wait between each erruption.
-
+but you visit a farm and collect some data and you think that chicks actually might weigh more than the proposed 250 grams on average.
 --
 
-A friend tells you it will be on average an hour between each eruption.
-
---
-
-But you have some data on wait times, and you want to know if it will take *more* than an hour.
-
----
-
-
----
-class: inverse, center, middle
-
-# Step 1: Collecting the basic facts of the question
-
-
----
-
-## What is the name of the theory-based test we should use?
-
---
-
-*One sample t Test*
-
---
-
-## What are our Hypotheses?
-
---
-
- $$ H_0: \mu = 150 grams $$
-
---
-
-### Which implies
-
- $$ H_A: \mu &gt;  150 grams $$  
---
-
-### but we know other inequalites are possible;
---
-reread question to verify you got the right one
---
- 
+See the summary of `chickwts` on the next slide.  
 
 ---
 
@@ -794,6 +738,48 @@ Skim summary statistics
    weight       0       71 71 261.31 78.07 108 204.5 258 323.5  423 ▃▅▅▇▃▇▂▂
 ```
 
+---
+
+![](worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+
+---
+class: inverse, center, middle
+
+# Step 1: Collecting the basic facts of the question
+
+
+---
+
+## What is the name of the theory-based test we should use?
+
+--
+
+*One sample t-test*
+
+--
+
+## What are our Hypotheses?
+
+--
+
+ $$ H_0: \mu = 150 grams $$
+
+--
+
+### Which implies
+
+ $$ H_A: \mu &gt;  150 grams $$  
+--
+
+### but we know other inequalites are possible;
+--
+reread question to verify you got the right one
+--
+ 
+
+
+
 --
 
 ## Is there evidence that the weight time will actually average more than an 150 grams at 6 weeks?
@@ -814,6 +800,49 @@ count: false
 .panel1-preliminaries2-auto[
 
 ```r
+# proposed parameter
+# mu a mean of 250 grams
+*250
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+```
+## [1] 250
+```
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# proposed parameter
+# mu a mean of 250 grams
+250 -&gt;
+* mu
+```
+]
+ 
+.panel2-preliminaries2-auto[
+
+]
+
+---
+count: false
+ 
+## The basic facts, recorded as R objects
+.panel1-preliminaries2-auto[
+
+```r
+# proposed parameter
+# mu a mean of 250 grams
+250 -&gt;
+  mu
+
 # sample size
 *71
 ```
@@ -833,6 +862,11 @@ count: false
 .panel1-preliminaries2-auto[
 
 ```r
+# proposed parameter
+# mu a mean of 250 grams
+250 -&gt;
+  mu
+
 # sample size
 71 -&gt;
 * n
@@ -850,6 +884,11 @@ count: false
 .panel1-preliminaries2-auto[
 
 ```r
+# proposed parameter
+# mu a mean of 250 grams
+250 -&gt;
+  mu
+
 # sample size
 71 -&gt;
   n
@@ -873,6 +912,11 @@ count: false
 .panel1-preliminaries2-auto[
 
 ```r
+# proposed parameter
+# mu a mean of 250 grams
+250 -&gt;
+  mu
+
 # sample size
 71 -&gt;
   n
@@ -894,6 +938,11 @@ count: false
 .panel1-preliminaries2-auto[
 
 ```r
+# proposed parameter
+# mu a mean of 250 grams
+250 -&gt;
+  mu
+
 # sample size
 71 -&gt;
   n
@@ -921,6 +970,11 @@ count: false
 .panel1-preliminaries2-auto[
 
 ```r
+# proposed parameter
+# mu a mean of 250 grams
+250 -&gt;
+  mu
+
 # sample size
 71 -&gt;
   n
@@ -946,84 +1000,22 @@ count: false
 .panel1-preliminaries2-auto[
 
 ```r
-# sample size
-71 -&gt;
-  n
-
-# observed mean 261 grams
-261.31 -&gt;
-  xbar
-
-# the sample standard deviation is
-78.07 -&gt;
-  s
-
 # proposed parameter
-# mu is an hour
-*250
-```
-]
- 
-.panel2-preliminaries2-auto[
-
-```
-## [1] 250
-```
-]
-
----
-count: false
- 
-## The basic facts, recorded as R objects
-.panel1-preliminaries2-auto[
-
-```r
-# sample size
-71 -&gt;
-  n
-
-# observed mean 261 grams
-261.31 -&gt;
-  xbar
-
-# the sample standard deviation is
-78.07 -&gt;
-  s
-
-# proposed parameter
-# mu is an hour
-250 -&gt;
-* mu
-```
-]
- 
-.panel2-preliminaries2-auto[
-
-]
-
----
-count: false
- 
-## The basic facts, recorded as R objects
-.panel1-preliminaries2-auto[
-
-```r
-# sample size
-71 -&gt;
-  n
-
-# observed mean 261 grams
-261.31 -&gt;
-  xbar
-
-# the sample standard deviation is
-78.07 -&gt;
-  s
-
-# proposed parameter
-# mu is an hour
+# mu a mean of 250 grams
 250 -&gt;
   mu
+
+# sample size
+71 -&gt;
+  n
+
+# observed mean 261 grams
+261.31 -&gt;
+  xbar
+
+# the sample standard deviation is
+78.07 -&gt;
+  s
 ```
 ]
  
@@ -1322,7 +1314,7 @@ and choose from the code based on my alternative hypothesis:
 
 ---
 
-## I'll use the two-tailed test; after double checking the question wording: "Is the wait time greater than".
+## I'll use the greater than test; after double checking the question wording: "Is the weight greater than...".
 
 --
 
@@ -1339,15 +1331,17 @@ and choose from the code based on my alternative hypothesis:
 
 --
 
-### The p-value output is computationally zero!  
+### The p-value output is 0.1131485; this is *not* a very small proportion of times.  
 
 --
 
-### So my observed value p-hat, 261.31, is quite inconsistent with the null.
+### So my observed value p-hat, 261.31, is consistent with the null.  
 
 --
 
-### There is very strong evidence against the null hypothesis.
+### There is little evidence against the null.
+
+--
 
 
 
