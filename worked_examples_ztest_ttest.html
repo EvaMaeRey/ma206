@@ -80,9 +80,22 @@ class: inverse, center, middle
 --
 
 ### but we know other inequalites (&gt;, &lt;) are possible;
+
+
+---
+
+## Cautions on hypothesis statements:
+
+
+### 1. reread question to verify you got the right inequality
 --
-reread question to verify you got the right one
+
+### 2. remember to use Greek letters for these proposed *parameters*!  'hypothesis' has a greek etymology, this is the weighty, long run or population proposal
 --
+
+### 3 a common mistake is to write 'H = ...' 
+--
+But we actually use colons to introduce the hypothesis 'Ho: ...' 
  
 
 ---
@@ -285,9 +298,9 @@ count: false
 ---
 class: inverse, center, middle
 
-# Step 2. How far am I into the tails of the null distribution?
+# Step 2. How far am I into the tails of the null distribution?  
 --
-Calculating the standardized statistic
+Calculating the standardized statistic  
 --
 (Z in this case)
 
@@ -484,11 +497,7 @@ z_numerator/sd_null -&gt;
 
 ---
 
-## So what I'm picturing is...
-
---
-
-![](worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+&lt;img src="worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-3-1.png" width="80%" /&gt;
 
 --
 
@@ -504,11 +513,13 @@ class: inverse, center, middle
 # Step 3: Express this extremeness as a p-value.
 --
 
-### In other words, how likely am I to observe something as extreme or more extreme than my statistic (phat in this case), if the null is true;
+### In other words, how likely am I to observe something as extreme or more extreme than my statistic (phat in this case), if the null is true;  
 --
-p-value expresses this as a proportion (logical max 1 - totally consistent w/ null; logical min 0 -- totally inconsistent with null);  
+p-value expresses this as a proportion (logical max 1 - totally consistent w/ null; logical min 0 -- totally inconsistent with null);   
 --
-The smaller the p-value, the more inconsistent w/ the null.
+The smaller the p-value, the more inconsistent w/ the null.  
+--
+This is also the area under the tails of the distribution of the null.
 
 
 ---
@@ -576,9 +587,11 @@ what are values that are consistent with the observed statistic?
 
 ### I want to look at the interval centered around p-hat, that will contain Pi 95% (or sometimes 90% or 99%) of the time in repeated samples.
 
+### So I'm picturing a normal distribution centered at p-hat, and an interval under that, which when integrated encompasses 95% of the area...
+
 ---
 
-### So I'm picturing a normal distribution centered at phat, and an interval under that, which when integrated encompasses 95% of the area...
+
 
 &lt;img src="worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-5-1.png" width="70%" /&gt;
 
@@ -641,6 +654,19 @@ phat - m*se
 ## [1] 0.6918683
 ```
 
+---
+
+# Note
+
+--
+
+## The 'margin of error' is a special case where the multiplier is equal to 2
+
+
+```r
+margin_of_error = 2 * se
+```
+
 
 ---
 
@@ -686,7 +712,7 @@ ggplot(chickwts) +
   NULL
 ```
 
-![](worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+![](worked_examples_ztest_ttest_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -752,20 +778,20 @@ skim(chickwts)
 ```
 
 ```
-## Skim summary statistics
-##  n obs: 71 
-##  n variables: 2 
-##  group variables:  
-## 
-## ── Variable type:factor ────────────────────────────────────────────────────────
-##  variable missing complete  n n_unique                         top_counts
-##      feed       0       71 71        6 soy: 14, cas: 12, lin: 12, sun: 12
-##  ordered
-##    FALSE
-## 
-## ── Variable type:numeric ───────────────────────────────────────────────────────
-##  variable missing complete  n   mean    sd  p0   p25 p50   p75 p100     hist
-##    weight       0       71 71 261.31 78.07 108 204.5 258 323.5  423 ▃▅▅▇▃▇▂▂
+Skim summary statistics
+ n obs: 71 
+ n variables: 2 
+ group variables:  
+
+── Variable type:factor ────────────────────────────────────────────────────────
+ variable missing complete  n n_unique                         top_counts
+     feed       0       71 71        6 soy: 14, cas: 12, lin: 12, sun: 12
+ ordered
+   FALSE
+
+── Variable type:numeric ───────────────────────────────────────────────────────
+ variable missing complete  n   mean    sd  p0   p25 p50   p75 p100     hist
+   weight       0       71 71 261.31 78.07 108 204.5 258 323.5  423 ▃▅▅▇▃▇▂▂
 ```
 
 --
