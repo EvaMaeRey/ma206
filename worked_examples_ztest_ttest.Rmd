@@ -422,10 +422,10 @@ class: inverse, center, middle
 
 --
 
-but you visit a farm and collect some data and you think that chicks actually might weigh more than the proposed 250 grams on average.
+### but you visit a farm and collect some data and you think that chicks actually might weigh more than the proposed 250 grams on average.
 --
 
-See the summary of `chickwts` on the next slide.  
+### See the summary of `chickwts` on the next slide.  
 
 ---
 
@@ -458,25 +458,25 @@ class: inverse, center, middle
 
 ---
 
-## What is the name of the theory-based test we should use?
+### What is the name of the theory-based test we should use?
 
 --
 
-*One sample t-test*
+### *One sample t-test*
 
 --
 
-## What are our Hypotheses?
+### What are our Hypotheses?
 
 --
 
- $$ H_0: \mu = 150 grams $$
+### $$ H_0: \mu = 250 grams $$
 
 --
 
 ### Which implies
 
- $$ H_A: \mu >  150 grams $$  
+### $$ H_A: \mu >  250 grams $$  
 --
 
 ### but we know other inequalites are possible;
@@ -487,9 +487,9 @@ reread question to verify you got the right one
 
 
 
---
+--_
 
-## Is there evidence that the weight time will actually average more than an 150 grams at 6 weeks?
+## Is there evidence that the weight time will actually average more than an 250 grams at 6 weeks?
 
 
 
@@ -579,11 +579,10 @@ t_numerator/sd_null ->
 
 ---
 
-So what I'm picturing is...
 
---
 
-```{r, eval = F}
+
+```{r, eval = F, echo = F}
 ggplot(chickwts) +
   geom_vline(xintercept = mu,
              linetype = "dashed",
@@ -678,38 +677,36 @@ what are values that are consistent with the observed statistic?
 
 ---
 
-### I want to look at the interval centered around xbar, that will contain $ \Pi $ 95% (or sometimes 90% or 99%) of the time in repeated samples.
+### I want to look at the interval centered around xbar, that will contain the true parameter 95% (or sometimes 90% or 99%) of the time in repeated samples.
 
 ---
 
-## So I'm picturing a distribution is centered around my observed statistic xbar
--- 
+## So I'm picturing a distribution is centered around my observed statistic xbar 
+--
 and want to know the interval under that, which when integrated encompasses 95% of the area
 --
-also centered around xbar
+also centered around x-bar
 
+---
 
-
-```{r, eval = F}
+```{r, echo = F}
 library(ggstamp)
-c(rep(0, 126), rep(1, 344)) -> x
 
-ggcanvas() +
-  scale_x_continuous(limits = 0:1) +
-  geom_vline(xintercept = 0:1, linetype = "dotted") +
-  geom_vline(xintercept = Pi,
-             linetype = "dashed") +
-  geom_vline(xintercept = phat) +
-  ggxmean:::geom_ttestconf(data = tibble(x = x),
-                           aes(x = x),
-                           color = "darkred",
-                           size = 3) +
-  ggxmean:::geom_tdist(data = tibble(x = x),
-                           aes(x = x),
-                           fill = "goldenrod3",
-                       height = .45) +
-  NULL
-
+ggplot(chickwts) +
+ aes(x = weight) +
+  geom_dotplot(dotsize = .7) +
+  ggxmean::geom_x_mean(linetype = "solid",
+             color = "goldenrod4")  +
+  ggxmean:::geom_tdist(height = 100) + 
+  geom_vline(xintercept = 250,
+             linetype = "dashed") + 
+  ggxmean:::geom_ttestconf(color = "darkred",
+                           alpha = .8,
+                           size = 3) + 
+  ggstamp::stamp_label(label = "In this case, the proposed pararmeter value for mu, 250 (dashed line) falls within the 95% confidence interval." %>% str_wrap(25),
+                       size = 3,
+                       x = 170, y = .6
+                       )
 ```
 
 ---
@@ -725,7 +722,7 @@ ggcanvas() +
 --
 ### and where:
 
-$$ SE = \frac{s}{\sqrt{n}} $$
+## $$ SE = \frac{s}{\sqrt{n}} $$
 
 
 ---
@@ -741,6 +738,13 @@ $$ SE = \frac{s}{\sqrt{n}} $$
 |95%|qnorm(.975)|qt(.975,n-1) or qt(.975,n-2)|
 |99%|qnorm(.995)|qt(.995,n-1) or qt(.995,n-2)|
 
+--
+
+# The test is for *quantitative* data and there is one quantity being estimated (*one* sample t-test); 
+--
+so `qt(.975,n-1)` is the right choice for 95% confidence
+
+
 ---
 
 ### and compute the lower bound
@@ -748,10 +752,9 @@ $$ SE = \frac{s}{\sqrt{n}} $$
 
 ```{r}
 se = s/sqrt(n)
-m = qt(.975, df = n - 1)
-margin_of_error = se*m
+multiplier = qt(.975, df = n - 1)
 
-xbar - margin_of_error
+xbar - multiplier*se
 ```
 
 --
@@ -759,21 +762,29 @@ xbar - margin_of_error
 ### and the upper bound
 
 ```{r}
-xbar + margin_of_error
+xbar + multiplier*se
+```
+
+---
+
+
+# Note that
+--
+a special case is where the multiplier equals 2.  The margin of error is 2*SE
+
+```{r}
+margin_of_error = 2*se
 ```
 
 
 ---
 
-# Step 5. Celebrate! You're done!!
+# Step 5. Woo! You're done!!
 
 ---
 
 # Step 6. Practice
 
----
-
-### What if I had asked about length of the erruption time itself?
 
 
 ---
@@ -787,7 +798,7 @@ You are visiting the park, and want to know how long you will have to wait betwe
 
 --
 
-A friend tells you it will be on average an hour between each eruption.
+A friend tells you it will be on average an hour (60 minutes) between each eruption.
 
 --
 
@@ -812,10 +823,13 @@ n = 272
 mu = 60
 ```
 
+--
+
 ```{r}
 # calculating t
 t_numerator = xbar - mu  
 se = s / (sqrt(n)) # the denominator
+
 t = t_numerator / se
 ```
 
@@ -830,17 +844,20 @@ t = t_numerator / se
 1-pt(t, df= n - 1)
 ```
 
+--
 
 ```{r}
 # calculating the confidence interval
 # correct code depends on 
 # the alternative hypothesis
 multiplier = qt(.975, n-1)
-se = s / (sqrt(n))
-margin_of_error = multiplier*se
+se = s / sqrt(n)
 
-xbar - margin_of_error
-xbar + margin_of_error
+xbar - multiplier*se
+xbar + multiplier*se
+
+margin_of_error = 2*se
+
 ```
 
 
