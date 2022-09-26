@@ -361,7 +361,7 @@ phat - m*se
 ### and the upper bound
 
 ```{r}
-phat - m*se
+phat + m*se
 ```
 
 ---
