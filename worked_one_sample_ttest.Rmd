@@ -1,0 +1,154 @@
+---
+title: "One sample t test"
+author: "ma206"
+date: '2022-09-29'
+output: 
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Step 0: Read question, and read in libraries and data
+
+> On average, do people **overestimate** time spans?  A song snippet that  is *ten seconds* is played for respondents.  **On average** will respondents **overestimate** the length of the snippet played.  Answer this question given a 99% conficence level.
+
+```{r cars, warning=F, message=F}
+library(tidyverse)
+library(janitor)
+
+#read in data from internet
+elapsedtime <- read_csv("https://raw.githubusercontent.com/EvaMaeRey/course_guide_datasets/main/chap2.ElapsedTime.csv")
+
+# preview
+head(elapsedtime)
+
+
+# summarize
+elapsedtime %>%   
+  summarise(n = n(),
+            xbar = mean(Time),
+            s = sd(Time))
+```
+
+# Step 1: basic facts
+
+## 1a Lay out null and alternative
+
+$$ H_0: \mu = 10 $$
+$$ H_A: \mu > 10 $$
+
+## 1b record values
+
+```{r}
+mu = 10 # proposed parameter
+
+n = 48 # number of observations
+xbar = 13.71 # observed statistic (mean)
+s = 6.50
+```
+## 1c plotting 
+
+Plot the distribution of the outcomes
+
+```{r, fig.height=2, fig.width=4, warning=F, message=F}
+ggplot(data = elapsedtime) + 
+  aes(x = Time) + 
+  geom_dotplot()
+```
+
+# Step 2: Standarized Statistic, Z
+
+## 2a Calculate
+
+```{r}
+t_numerator = xbar - mu
+sd_null = s / sqrt(n)
+
+t = t_numerator/sd_null
+
+print(t)
+```
+
+
+## 2b Interpret
+
+| value of t | strength |
+|:--------------------:|---------------------|
+|between −1.5 and 1.5 |little or no evidence against the null hypothesis| 
+|below −1.5 or above 1.5|moderate evidence against the null hypothesis|
+|below −2 or above 2|strong evidence against the null hypothesis|
+|below −3 or above 3|very strong evidence against the null hypothesis|
+
+# Step 3: P-Value
+
+> The p-value is the probability of observing a result as or more extreme as the statistic (xbar), if the null is true. 
+
+## 3a Calculate
+
+Select the code according to the alternative hypothesis
+
+|Alternative Hypothesis|R Code|
+|:--------------------:|------|
+|$$ > $$|`1-pt(t, df = n-1)`|
+|$$ < $$|`pt(t, df = n-1)`|
+|$$ \neq$$|`2*(1-pt(abs(t), df = n-1))`|
+
+```{r}
+pvalue = 1-pt(t, df = n-1)
+
+print(pvalue)
+```
+
+## 3b Interpret
+
+
+> Guidelines for evaluating strength of evidence from p-values
+
+| Value | Interpretation|
+|:---------------:|--------------------|
+|0.10 < p-value|not much evidence against null hypothesis; null is plausible|
+|0.05 < p-value ≤ 0.10|moderate evidence against the null hypothesis|
+|0.01 < p-value ≤ 0.05|strong evidence against the null hypothesis|
+|p-value ≤ 0.01|very strong evidence against the null hypothesis|
+
+> The smaller the p-value, the stronger the evidence against the null hypothesis.
+
+## 3c Compare to critical value
+
+The critical value, alpha, is implied by the confidence level required.  The question requires 95% confidence.  This implies a .01 critical level (taking 1 minus .99).
+
+We compare this to the p-value.  If the p-value is smaller, we can reject the null hypothesis.
+
+```{r}
+pvalue < .01 # if true reject the null
+```
+
+I will *reject* the null hypothesis. My p-value is 0.0001285488, which is less than alpha, the critical value. 
+
+# Step 4: Confidence Interval
+
+## 4a calculate
+
+|**Confidence Interval**|**Multiplier (Categorical)**|Multiplier (Quantitative)|
+|-------------------|-----------------------|-------------------------|
+|90%|`qnorm(.95)`| `qt(.95,n-1)` or `qt(.95,n-2)`|
+|95%|`qnorm(.975)`|`qt(.975,n-1)` or `qt(.975,n-2)`|
+|99%|`qnorm(.995)`|`qt(.995,n-1)` or `qt(.995,n-2)`|
+
+
+## 4b interpret
+
+```{r}
+se = s / sqrt(n)
+m = qt(.975, df = n - 1)
+
+lower_bound = xbar - m*se
+upper_bound = xbar + m*se
+
+print(lower_bound)
+print(upper_bound)
+```

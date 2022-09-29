@@ -1,0 +1,154 @@
+---
+title: "One proportion z test"
+author: "ma206"
+date: '2022-09-29'
+output: 
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Step 0: Read question, and read in libraries and data
+
+> On Halloween, will children **prefer** candy to an inexpensive toy when offered both?  Answer this question given a 95% conficence level.
+
+```{r cars, warning=F, message=F}
+library(tidyverse)
+library(janitor)
+
+#read in data from internet
+halloween <- read_csv("https://raw.githubusercontent.com/EvaMaeRey/course_guide_datasets/main/chap1.Halloween.csv")
+
+# preview
+head(halloween)
+
+
+# summarize
+halloween %>%   
+  count(Selection) 
+
+
+```
+
+# Step 1: basic facts
+
+## 1a Lay out null and alternative
+
+$$ H_0: \Pi = .5 $$
+$$ H_A: \Pi > .5 $$
+
+## 1b record values
+
+```{r}
+pi = .5 # proposed parameter
+n = 148 + 135 # number of observations
+phat = 148/n # observed statistic (proportion)
+
+print(phat)
+```
+## 1c plotting 
+
+Plot relative frequency of the two outcomes
+
+```{r, fig.height=2, fig.width=4}
+ggplot(data = halloween) + 
+  aes(x = Selection) + 
+  geom_bar()
+```
+
+# Step 2: Standarized Statistic, Z
+
+## 2a Calculate
+
+```{r}
+z_numerator = phat - pi
+sd_null = sqrt( pi * (1 - pi) / n )
+
+z = z_numerator/sd_null
+
+print(z)
+```
+
+
+## 2b Interpret
+
+| value of Z | strength |
+|:--------------------:|---------------------|
+|between −1.5 and 1.5 |little or no evidence against the null hypothesis| 
+|below −1.5 or above 1.5|moderate evidence against the null hypothesis|
+|below −2 or above 2|strong evidence against the null hypothesis|
+|below −3 or above 3|very strong evidence against the null hypothesis|
+
+# Step 3: P-Value
+
+> The p-value is the probability of observing a result as or more extreme as the statistic (p-hat), if the null is true. 
+
+## 3a Calculate
+
+Select the code according to the alternative hypothesis
+
+|Alternative Hypothesis|R Code|
+|:--------------------:|------|
+|$$ > $$|`1-pnorm(z)`|
+|$$ < $$|`pnorm(z)`|
+|$$ \neq$$|`2*(1-pnorm(abs(z)))`|
+
+```{r}
+pvalue = 1-pnorm(z)
+
+print(pvalue)
+```
+
+## 3b Interpret
+
+
+> Guidelines for evaluating strength of evidence from p-values
+
+| Value | Interpretation|
+|:---------------:|--------------------|
+|0.10 < p-value|not much evidence against null hypothesis; null is plausible|
+|0.05 < p-value ≤ 0.10|moderate evidence against the null hypothesis|
+|0.01 < p-value ≤ 0.05|strong evidence against the null hypothesis|
+|p-value ≤ 0.01|very strong evidence against the null hypothesis|
+
+> The smaller the p-value, the stronger the evidence against the null hypothesis.
+
+## 3c Compare to critical value
+
+The critical value, alpha, is implied by the confidence level required.  The question requires 95% confidence.  This implies a .05 critical level (taking 1 minus .95).
+
+We compare this to the p-value.  If the p-value is smaller, we can **reject the null hypothesis**.
+
+```{r}
+pvalue < .05 # if true reject the null
+```
+
+I fail to reject the null hypothesis. My p-value is `r pvalue`, which is greater than alpha, the critical value. 
+
+# Step 4: Confidence Interval
+
+## 4a calculate
+
+|**Confidence Interval**|**Multiplier (Categorical)**|Multiplier (Quantitative)|
+|-------------------|-----------------------|-------------------------|
+|90%|`qnorm(.95)`| `qt(.95,n-1)` or `qt(.95,n-2)`|
+|95%|`qnorm(.975)`|`qt(.975,n-1)` or `qt(.975,n-2)`|
+|99%|`qnorm(.995)`|`qt(.995,n-1)` or `qt(.995,n-2)`|
+
+
+## 4b interpret
+
+```{r}
+se = sqrt( phat * (1 - phat) / n )
+m = qnorm(.975)
+
+lower_bound = phat - m*se
+upper_bound = phat + m*se
+
+print(lower_bound)
+print(upper_bound)
+```
