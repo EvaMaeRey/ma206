@@ -1,0 +1,435 @@
+---
+title: "Code Annex"
+author: "ma206"
+date: '2022-10-02'
+output:
+ rmdformats::readthedown:
+ highlight: kate
+ css: custom.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Generic code for various statistical tests in R.
+
+## Single Categorical Variable 
+
+### Summary Statistic
+
+```{r, eval = FALSE}
+dataframe %>%
+  count(variable) %>%
+  mutate(prop = n/sum(n)) %>%
+  adorn_totals()
+```
+
+Check whether or not validity conditions are met.
+
+### Bargraph
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x=variable)) +
+  geom_bar()
+```
+
+
+### One-proportion z-test
+
+Standard Deviation of the null distribution:
+
+$sd_{null}=\sqrt{\frac{\pi_0(1-\pi_0)}{n}}$ 
+
+```{r, eval = FALSE}
+null =           # Enter the value of your Null Hypothesis Parameter
+n =              # Enter the sample size
+stat =           # Enter the value of your statistic
+sd = sqrt(null*(1 - null)/n)  # Standard deviation of the null distribution
+standardized_stat = (stat-null)/sd  # Standardized Statistic, z
+```
+
+Choose the $p$-value code that corresponds to the alternative hypothesis:
+
+Less than hypothesis
+```{r, eval = FALSE}
+pvalue = pnorm(standardized_stat)
+```
+
+Greater than hypothesis
+```{r, eval = FALSE}
+pvalue = 1-pnorm(standardized_stat)
+```
+
+Two sided hypothesis
+```{r, eval = FALSE}
+pvalue = 2*(1-pnorm(abs(standardized_stat)))
+```
+
+### Confidence Interval
+
+```{r, eval = FALSE}
+siglevel =              #Enter your significance level (alpha)
+multiplier = qnorm(1-siglevel/2) 
+se = sqrt(stat*(1 - stat)/n)     # Standard Error
+CI = c(stat-multiplier*se, stat+multiplier*se)  # Confidence Interval
+```
+$se=\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$ 
+
+## Single Quantitative Variable
+
+### Summary Statistic
+```{r, eval = FALSE}
+dataframe %>%
+  summarise(mean = mean(variable),
+            s = sd(variable),
+            n = n())
+```
+
+### Histogram
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x = variable)) + 
+  geom_histogram()
+```
+
+Check whether or not validity conditions are met.
+
+### One-sample t-test
+
+```{r, eval = FALSE}
+null =           #Enter the value of your Null Hypothesis Parameter
+n =              #Enter the sample size
+stat =           #Enter the value of your statistic
+s =              # Sample standard deviation (from summary statistics)
+sd = s/sqrt(n)   # Standard deviation of the null distribution
+standardized_stat = (stat-null)/sd # Standardized statistic, t
+```
+
+Standard Deviation of the null distribution:
+
+$sd_{null}=s/\sqrt{n}$
+
+Choose the $p$-value code that corresponds to the alternative hypothesis:
+
+Less than hypothesis
+```{r, eval = FALSE}
+pvalue = pt(standardized_stat, n-1)
+```
+
+Greater than hypothesis
+```{r, eval = FALSE}
+pvalue = 1-pt(standardized_stat, n-1)
+```
+
+Two sided hypothesis
+
+```{r, eval = FALSE}
+pvalue = 2*(1-pt(abs(standardized_stat), n-1))
+```
+
+### Confidence Interval
+
+```{r, eval = FALSE}
+siglevel =              #Enter your significance level (alpha)
+multiplier = qt(1-siglevel/2, n-1)
+se = s/sqrt(n)          # Standard error
+CI = c(stat-multiplier*se, stat+multiplier*se)  # Confidence Interval
+```
+
+Standard Error:
+
+$se=s/\sqrt{n}$
+
+## Comparing Two Proportions 
+### Categorical Explanatory Variable, Categorical Response Variable
+
+### Summary Statistic
+
+```{r, eval = FALSE}
+dataframe <- dataframe %>% 
+  mutate(explanatoryvariable = as.factor(explanatoryvariable),
+         responsevariable = as.factor(responsevariable)) # convert the categorical variables to a factors
+
+dataframe %>%
+  count(explanatoryvariable, 
+        responsevariable) %>%
+  pivot_wider(names_from = explanatoryvariable, 
+              values_from = n) %>%
+  adorn_totals(c("row", "col"))
+```
+
+Check whether or not validity conditions are met.
+
+### Segmented Bar Graph
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x= explanatoryvariable,
+             fill = responsevariable)) +
+  geom_bar(position = position_fill())
+```
+
+### Two-proportion z-test
+
+```{r, eval = FALSE}
+null =           #Enter the value of your Null Hypothesis Parameter
+n =              #Enter the sample size
+stat =           #Enter the value of your statistic
+successes_1 =     # number of successes in group 1
+successes_2 =     # number of successes in group 2
+n_1 =    # sample size of group 1     
+n_2 =    # sample size of group 2
+phat_1 = successes_1/n_1
+phat_2 = successes_2/n_2
+phat_t = (successes_1 + successes_2)/(n_1 + n_2)
+stat = phat_1-phat_2 # ensure this matches your null hypothesis order
+sd = sqrt(phat_t*(1-phat_t)*(1/n_1 + 1/n_2))
+standardized_stat = (stat-null)/sd  # standardized statistic, z
+```
+
+Statistic: 
+
+$\textrm{stat}=\hat{p_1}-\hat{p_2}$
+
+Standard Deviation of the Null Distribution:
+
+$sd_{null}=\sqrt{\hat{p}*(1-\hat{p})*(\frac{1}{n_1}+\frac{1}{n_2})}$
+
+Choose the $p$-value code that corresponds to the alternative hypothesis:
+
+Less than hypothesis
+```{r, eval = FALSE}
+pvalue = pnorm(standardized_stat)
+```
+
+Greater than hypothesis
+```{r, eval = FALSE}
+pvalue = 1-pnorm(standardized_stat)
+```
+
+Two sided hypothesis
+```{r, eval = FALSE}
+pvalue = 2*(1-pnorm(abs(standardized_stat)))
+```
+
+### Confidence Interval
+
+```{r, eval = FALSE}
+siglevel =              #Enter your significance level (alpha)
+multiplier = qnorm(1-siglevel/2)
+se = sqrt(phat_1*(1-phat_1)/n_1+phat_2*(1-phat_2)/n_2) # Standard Error
+CI = c(stat-multiplier*se, stat+multiplier*se)  # Confidence Interval
+```
+$se=\sqrt{\frac{\hat{p_1}*(1 - \hat{p_1})}{n_1}+\frac{\hat{p_2}*(1 - \hat{p_2})}{n_2}}$
+
+## Comparing Two Means
+### Categorical Explanatory Variable, Quantitative Response Variable
+
+### Summary Statistic
+```{r, eval = FALSE}
+dataframe <- dataframe %>% 
+  mutate(catvariable = as.factor(catvariable)) # convert the categorical variable to a factor
+
+dataframe %>%
+  group_by(catvariable) %>%
+  summarise(mean = mean(quantvariable),
+            s = sd(quantvariable),
+            n = n())
+```
+
+### Split Histogram
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x=quantvariable)) + 
+  geom_histogram() +
+  facet_grid(catvariable~.)
+```
+
+Check whether or not validity conditions are met.
+
+### Two-sample t-test
+
+Statistic: 
+
+$\textrm{stat}=\bar{x}_1-\bar{x}_2$
+
+```{r, eval = FALSE}
+null =           #Enter the value of your Null Hypothesis Parameter
+n =              #Enter the sample size
+xbar_1 =        # sample mean of group 1
+xbar_2 =        # sample mean of group 2
+s_1 =           # sample standard deviation of group 1
+s_2 =           # sample standard deviation of group 2
+n_1 =      # sample size of group 1
+n_2 =        # sample size of group 2
+stat = xbar_1 - xbar_2
+sd = sqrt(s_1^2/n_1 + s_2^2/n_2)
+standardized_stat = (stat-null)/sd # standardized statistic, t
+```
+
+Standard Deviation of the Null Distribution:
+
+$sd_{null}=\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}$
+
+Choose the $p$-value code that corresponds to the alternative hypothesis:
+
+Less than hypothesis
+```{r, eval = FALSE}
+pvalue = pt(standardized_stat, n-2)
+```
+
+Greater than hypothesis
+```{r, eval = FALSE}
+pvalue = 1 - pt(standardized_stat, n-2)
+```
+
+Two sided hypothesis
+
+```{r, eval = FALSE}
+pvalue = 2*(1-pt(abs(standardized_stat), n-2))
+```
+
+### Confidence Interval
+
+```{r, eval = FALSE}
+siglevel =              #Enter your significance level (alpha)
+multiplier = qt(1-siglevel/2, n-2)
+se = sqrt(s_1^2/n_1 + s_2^2/n_2) # standard error
+CI = c(stat-multiplier*se, stat + multiplier*se) # confidence interval
+```
+$se=\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}$
+
+## Linear Regression
+
+The model below is linear regression without any interaction terms.  Include as many variables as needed to be analyzed.
+```{r, eval = FALSE}
+lrmodel <- dataframe %>%
+  lm(responsevar ~ var1 + var2, data = .)
+summary(lrmodel)
+```
+
+The model below evaluates an interaction between the two variables.
+
+```{r, eval = FALSE}
+lrmodel <- dataframe %>%
+  lm(responsevar ~ var1 * var2, data = .)
+summary(lrmodel)
+```
+
+### Testing Validity Conditions
+
+#### Validating **L**inearity and **E**qual Variance
+
+```{r, eval = FALSE}
+lrmodel%>%
+  fortify(lrmodel$model)%>%
+  ggplot(aes(x = .fitted, 
+             y = .resid))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  labs( x = "Predicted Values", 
+        y = "Residuals", 
+        title = "Residuals vs. predicted values")
+```
+
+#### Validating the **I**ndependence condition
+
+```{r, eval = FALSE}
+lrmodel%>%
+  fortify(lrmodel$model) %>%
+  mutate(row = row_number()) %>%
+  ggplot(aes(x = row, 
+             y = .resid))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  labs(x = "Order of Occurence", 
+       y = "Residuals", 
+       title = "Residuals in Order of Occurence")
+```
+
+#### Validating the **N**ormality condition
+
+```{r, eval = FALSE}
+lrmodel%>%
+  fortify(lrmodel$model)%>%
+  ggplot(aes(x = .resid))+
+  geom_histogram()+
+  labs(x = "Residuals", 
+       title = "Histogram of residuals")
+```
+
+## Visualizations
+
+### Bargraph
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x=as.factor(variable))) +
+  geom_bar()
+```
+
+### Histogram
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x=variable)) + 
+  geom_histogram()
+```
+
+### Split Histogram
+Note that the method below can be used to split any plot type up by a categorical variable's values.  This example is for a histogram.
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x=quantvariable)) + 
+  geom_histogram() +
+  facet_grid(as.factor(catvariable)~.)
+```
+
+### Segmented Bar Graph
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x=as.factor(explanatoryvariable), fill = as.factor(responsevariable))) +
+  geom_bar(position = position_fill())
+```
+
+
+### Boxplot
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x = var1, y = var2)) +
+  geom_boxplot()
+```
+
+### Scatterplot
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x=var1, y=var2)) +
+  geom_point()
+```
+
+### Scatterplot with Linear Regression Line
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x=var1, y=var2)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+### Scatterplot with Linear Regression Interaction
+
+```{r, eval = FALSE}
+dataframe %>%
+  ggplot(aes(x = var1, y = var2, color = var3)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
